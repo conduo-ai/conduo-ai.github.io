@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conduo — Config-Driven Retail Data Integration</title>
+    <title>Conduo — Real-Time Data for Retail & Distributed Enterprise</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -258,10 +258,10 @@
 <section class="hero">
     <div class="hero-chip">
         <span class="dot"></span>
-        Live — streaming retail data in production
+        Live — streaming data in production
     </div>
-    <h1>The Real-Time Data Backbone for Modern Retail<br>for <em>modern retail</em></h1>
-    <p class="hero-sub">Ingest POS, inventory, products, and store data from flat files and APIs. Normalise into events. Stream to Kafka, Event Hubs, or JSONL. Monitor everything in real-time.</p>
+    <h1>Real-Time Data for<br><em>Retail & Distributed Enterprise</em></h1>
+    <p class="hero-sub">Config-driven ETL that ingests files and APIs, normalises into events, and streams to Kafka or JSONL. Deployed at the edge, monitored from the cloud. Licensed, tracked, and always visible.</p>
     <div class="hero-actions">
         <a href="#contact" class="btn btn-e btn-lg">Book a Demo →</a>
         <a href="#how-it-works" class="btn btn-o btn-lg">See How It Works</a>
@@ -281,17 +281,19 @@
                 <span>conduo — pipeline output</span>
             </div>
             <div class="term-body">
-<span class="prompt">$</span> conduo ingest --config pos_transaction.json --watch /data/pos/
-<span class="dim">watching /data/pos/ for new files...</span>
+<span class="prompt">$</span> conduo start --config data_config/ --watch /data/incoming/
+<span class="dim">loading schemas from data_config/...</span>
+<span class="cy">  ├─ pos_transaction_line</span>  <span class="cy">├─ boh_inventory</span>  <span class="cy">├─ product_master</span>
+<span class="cy">  ├─ shipment</span>  <span class="cy">├─ store_master</span>  <span class="cy">├─ planning_application</span>
+<span class="dim">registering with controller...</span>
+<span class="hi">✓ licensed</span> <span class="dim">— heartbeat every 30s → controller.conduo.ai</span>
 
-<span class="hi">▸ new file:</span> pos_2026-02-18_store_042.csv <span class="dim">(14,847 lines)</span>
-<span class="cy">  ├─ schema:</span> pos_transaction_line
-<span class="cy">  ├─ fields:</span> 23 mapped, 2 derived (line_total, discount_amt)
-<span class="cy">  ├─ validated:</span> <span class="hi">14,832 ok</span> <span class="ro">15 rejected</span> <span class="dim">(missing required)</span>
-<span class="cy">  └─ output:</span> <span class="hi">kafka://events/pos</span> <span class="dim">+ /out/pos_20260218.jsonl</span>
+<span class="hi">▸ new file:</span> planning_apps_2026-02.csv <span class="dim">(2,847 lines)</span>
+<span class="cy">  ├─ schema:</span> planning_application
+<span class="cy">  ├─ validated:</span> <span class="hi">2,841 ok</span> <span class="ro">6 rejected</span>
+<span class="cy">  └─ output:</span> <span class="hi">kafka://events/planning</span> <span class="dim">+ planning_202602.jsonl</span>
 
-<span class="am">throughput:</span> 2,847 events/sec  <span class="am">total:</span> 14,832  <span class="am">latency:</span> 5.2s
-<span class="hi">✓ pipeline complete</span>
+<span class="am">throughput:</span> 1,420 events/sec  <span class="am">status:</span> <span class="hi">● up</span>  <span class="am">controller:</span> <span class="hi">● connected</span>
             </div>
         </div>
     </div>
@@ -299,7 +301,7 @@
 
 <!-- PROOF -->
 <div class="proof">
-    <p class="proof-label">Built for retailers and platform companies</p>
+    <p class="proof-label">Trusted across retail, construction, and supply chain</p>
     <div class="proof-logos">
         <span>Impulse Logic</span>
         <span>The Modern Builder</span>
@@ -311,53 +313,56 @@
 <section id="how-it-works">
     <div class="wrap tc">
         <div class="tag rv">How It Works</div>
-        <div class="stitle rv">Configure. Ingest. Stream.</div>
-        <p class="sdesc c rv">Define a JSON config per data type. Conduo handles parsing, validation, transformation, and delivery — to Kafka, Event Hubs, or file output.</p>
+        <div class="stitle rv">Deploy. Connect. Monitor.</div>
+        <p class="sdesc c rv">Deploy an integration layer wherever your data lives. It ingests, transforms, and streams — then reports back to the Conduo Controller so you always know what's running.</p>
 
         <div class="how-grid">
             <div class="how-card rv">
                 <div class="how-num n1">1</div>
-                <h3>Configure Your Schema</h3>
-                <p>Define field mappings, validation rules, and derived fields in a JSON config. One config per data type — POS, products, inventory, stores, shipments.</p>
+                <h3>Configure &amp; Deploy</h3>
+                <p>Define schemas in JSON configs — field mappings, validation, derived fields. Deploy the integration layer on-prem, in the cloud, or at the edge. Set a license key and controller URL.</p>
                 <code>{
-  "schema": "pos_transaction_line",
-  "delimiter": "|",
+  "schema": "planning_application",
+  "delimiter": ",",
   "fields": [
-    {"source": "STORE_ID", "target": "store_id", "required": true},
-    {"source": "ITEM_CODE", "target": "sku"},
-    {"source": "QTY", "target": "quantity", "type": "int"}
+    {"source": "REF", "target": "ref", "required": true},
+    {"source": "ADDRESS", "target": "address"},
+    {"source": "STATUS", "target": "status"}
   ],
   "derived": [
-    {"field": "line_total", "formula": "qty * unit_price"}
+    {"field": "decision_days", "formula": "decided - submitted"}
   ]
 }</code>
             </div>
             <div class="how-card rv">
                 <div class="how-num n2">2</div>
-                <h3>Ingest Data</h3>
-                <p>Two ingestion modes: watch a directory for new files (pipe-delimited, CSV) or receive data via REST API endpoints. Conduo parses, validates, and normalises into consistent events.</p>
-                <code><span style="color:var(--amber)">File-based:</span>
-  Watch /data/pos/ for *.csv
-  Auto-detect delimiter
-  Parse → validate → transform
+                <h3>Ingest &amp; Stream</h3>
+                <p>Watch directories for new files or receive data via REST API. Events are validated, transformed, and published to Kafka, Event Hubs, or JSONL. Local dashboard shows throughput in real-time.</p>
+                <code><span style="color:var(--amber)">File watcher:</span>
+  Watch /data/incoming/ for *.csv
+  Parse → validate → transform → stream
 
-<span style="color:var(--cyan)">API-based:</span>
-  POST /api/ingest/pos_transaction
-  Content-Type: application/json
-  → validated, enriched, streamed</code>
+<span style="color:var(--cyan)">REST API:</span>
+  POST /api/ingest/planning_application
+  → validated, enriched, streamed
+
+<span style="color:var(--em)">Outputs:</span>
+  → kafka://broker/planning-events
+  → /output/planning_202602.jsonl</code>
             </div>
             <div class="how-card rv">
                 <div class="how-num n3">3</div>
-                <h3>Stream Everywhere</h3>
-                <p>Events publish to Kafka-compatible brokers — local Redpanda, Azure Event Hubs, or the Event Hubs Emulator. Plus JSONL file output. Deterministic keys ensure idempotent delivery.</p>
-                <code><span style="color:var(--em)">Outputs:</span>
-  → kafka://broker/pos-events
-  → eventhubs://namespace/pos
-  → /output/pos_20260218.jsonl
+                <h3>Monitor Remotely</h3>
+                <p>Each integration layer registers with the Conduo Controller on startup and sends heartbeats every ~30 seconds. The controller tracks status, license validity, events/sec, and total events across all deployments.</p>
+                <code><span style="color:var(--em)">Outbound-only model:</span>
+  Layer → Controller (registration)
+  Layer → Controller (heartbeat ~30s)
 
-<span style="color:var(--em)">Every event includes:</span>
-  event_type, source_file,
-  ingested_at, deterministic key</code>
+<span style="color:var(--em)">Controller tracks:</span>
+  ● up / ● stale / ● down
+  License validation
+  Events/sec per deployment
+  Total events across fleet</code>
             </div>
         </div>
     </div>
@@ -366,15 +371,16 @@
 <!-- DASHBOARD -->
 <section id="dashboard">
     <div class="wrap tc">
-        <div class="tag rv">Dashboard</div>
-        <div class="stitle rv">Real-time visibility into<br>every event</div>
-        <p class="sdesc c rv">Built-in Svelte dashboard with throughput metrics, time-series charts, event inspection, and filtering. Plus a full OpenAPI spec with Swagger UI.</p>
+        <div class="tag rv">Monitoring</div>
+        <div class="stitle rv">Two dashboards.<br>Full visibility.</div>
+        <p class="sdesc c rv">Every integration layer has a local Svelte dashboard for throughput and events. The Conduo Controller gives you a single view of every deployment — status, license, and throughput — from anywhere.</p>
 
-        <div class="dash-preview rv">
+        <!-- Local Dashboard -->
+        <div class="dash-preview rv" style="margin-bottom:1.5rem">
             <div class="dash-bar">
                 <div class="dash-bar-l">
                     <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
-                    <span style="margin-left:0.5rem">conduo dashboard — localhost:8080</span>
+                    <span style="margin-left:0.5rem">integration layer — local dashboard</span>
                 </div>
                 <span>OpenAPI · Swagger UI</span>
             </div>
@@ -410,12 +416,71 @@
                     <div class="dash-panel-title">Recent Events</div>
                     <ul class="dash-events">
                         <li class="dash-event"><span class="dash-event-type pos">POS</span> store_042 — 847 lines <span class="dash-event-time">2s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type prod">PROD</span> product_master_sync <span class="dash-event-time">14s ago</span></li>
+                        <li class="dash-event"><span class="dash-event-type prod">PLAN</span> planning_apps_feb — 312 records <span class="dash-event-time">14s ago</span></li>
                         <li class="dash-event"><span class="dash-event-type inv">BOH</span> inventory_042 — 312 items <span class="dash-event-time">28s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type ship">SHIP</span> shipment_DC01 → store_042 <span class="dash-event-time">45s ago</span></li>
+                        <li class="dash-event"><span class="dash-event-type ship">SHIP</span> shipment_DC01 → site_019 <span class="dash-event-time">45s ago</span></li>
                         <li class="dash-event"><span class="dash-event-type pos">POS</span> store_038 — 1,204 lines <span class="dash-event-time">1m ago</span></li>
                     </ul>
                 </div>
+            </div>
+        </div>
+
+        <!-- Controller Dashboard -->
+        <div class="dash-preview rv">
+            <div class="dash-bar">
+                <div class="dash-bar-l">
+                    <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+                    <span style="margin-left:0.5rem">conduo controller — controller.conduo.ai</span>
+                </div>
+                <span>All Deployments</span>
+            </div>
+            <div style="padding:0.75rem 1.25rem;font-family:var(--mono);font-size:0.68rem">
+                <table style="width:100%;border-collapse:collapse;text-align:left">
+                    <thead>
+                        <tr style="border-bottom:1px solid var(--border)">
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Deployment</th>
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Status</th>
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">License</th>
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Events/sec</th>
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Total Events</th>
+                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Last Heartbeat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid var(--border)">
+                            <td style="padding:0.55rem 0.75rem;color:var(--text)">massy-pos-prod</td>
+                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">scale-001</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--em)">2,847</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">14.2M</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">4s ago</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid var(--border)">
+                            <td style="padding:0.55rem 0.75rem;color:var(--text)">tmb-planning-prod</td>
+                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">connect-003</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--em)">12</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">8,420</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">18s ago</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid var(--border)">
+                            <td style="padding:0.55rem 0.75rem;color:var(--text)">massy-boh-staging</td>
+                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--amber)">● stale</span></td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">scale-001</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">892K</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--amber)">3m ago</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text)">demo-retail-dev</td>
+                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--rose)">● down</span></td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">launch-002</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">45K</td>
+                            <td style="padding:0.55rem 0.75rem;color:var(--rose)">12m ago</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -425,57 +490,57 @@
 <section id="schemas">
     <div class="wrap tc">
         <div class="tag rv">Data Types</div>
-        <div class="stitle rv">Seven retail schemas,<br>ready to go</div>
-        <p class="sdesc c rv">Pre-built configs for core retail data types. Each includes field mappings, validation rules, derived fields, and consistent snake_case output.</p>
+        <div class="stitle rv">Pre-built schemas.<br>Or bring your own.</div>
+        <p class="sdesc c rv">Ready-made configs for common data types across retail, construction, and supply chain. Plus define any custom schema via JSON config.</p>
 
         <div class="schema-grid rv">
             <div class="schema">
                 <div class="schema-icon">💳</div>
                 <h4>pos_transaction_line</h4>
                 <p>POS line items — sales, returns, discounts, tax, derived totals</p>
-                <span class="schema-tag live">Live</span>
+                <span class="schema-tag live">Retail</span>
             </div>
             <div class="schema">
                 <div class="schema-icon">📦</div>
                 <h4>product_master</h4>
                 <p>Product catalogue — SKU, description, category, attributes</p>
-                <span class="schema-tag live">Live</span>
+                <span class="schema-tag live">Retail</span>
             </div>
             <div class="schema">
                 <div class="schema-icon">🏪</div>
                 <h4>boh_inventory</h4>
                 <p>Back-of-house inventory — stock levels, locations, counts</p>
-                <span class="schema-tag live">Live</span>
+                <span class="schema-tag live">Retail</span>
+            </div>
+            <div class="schema">
+                <div class="schema-icon">🏗️</div>
+                <h4>planning_application</h4>
+                <p>Planning submissions — reference, address, status, decisions</p>
+                <span class="schema-tag live">Construction</span>
+            </div>
+            <div class="schema">
+                <div class="schema-icon">🚛</div>
+                <h4>shipment</h4>
+                <p>Shipment data — origin to destination, tracking, line items</p>
+                <span class="schema-tag live">Supply Chain</span>
+            </div>
+            <div class="schema">
+                <div class="schema-icon">🏬</div>
+                <h4>site_master</h4>
+                <p>Site metadata — location, type, region, attributes</p>
+                <span class="schema-tag live">Multi-Industry</span>
             </div>
             <div class="schema">
                 <div class="schema-icon">🗂️</div>
                 <h4>product_hierarchy</h4>
                 <p>Category trees — department, class, subclass, family</p>
-                <span class="schema-tag live">Live</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🏬</div>
-                <h4>store_master</h4>
-                <p>Store metadata — location, format, region, attributes</p>
-                <span class="schema-tag live">Live</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">👤</div>
-                <h4>user_associate</h4>
-                <p>User and associate records — roles, access, assignments</p>
-                <span class="schema-tag live">Live</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🚛</div>
-                <h4>shipment</h4>
-                <p>Shipment data — DC to store, tracking, line items</p>
-                <span class="schema-tag live">Live</span>
+                <span class="schema-tag live">Retail</span>
             </div>
             <div class="schema" style="border-style:dashed">
                 <div class="schema-icon">⚙️</div>
-                <h4>custom_schema</h4>
-                <p>Define your own — any data type via JSON config</p>
-                <span class="schema-tag live">Config</span>
+                <h4>your_schema</h4>
+                <p>Define any data type — JSON config, your fields, your rules</p>
+                <span class="schema-tag live">Any Industry</span>
             </div>
         </div>
     </div>
@@ -485,39 +550,39 @@
 <section id="features">
     <div class="wrap">
         <div class="tag rv">Platform</div>
-        <div class="stitle rv">Built for retail data<br>at production scale</div>
-        <p class="sdesc rv">Not another generic ETL. Conduo is purpose-built for the reality of retail data — pipe-delimited files, inconsistent formats, and systems that haven't been updated since 2005.</p>
+        <div class="stitle rv">Built for operational data<br>at production scale</div>
+        <p class="sdesc rv">Not another generic ETL. Conduo is purpose-built for the reality of operational data — pipe-delimited files, inconsistent formats, and systems that haven't been updated since 2005.</p>
 
         <div class="fgrid">
             <div class="fc rv">
                 <div class="fi e">📂</div>
                 <h3>File Watcher Ingestion</h3>
-                <p>Watches directories for new files. Pipe-delimited, CSV — auto-detected and processed. Drop a file, get events. No code, no API calls.</p>
+                <p>Watches directories for new files. Pipe-delimited, CSV — auto-detected and processed. Drop a file, get events. One-shot or continuous watch mode.</p>
             </div>
             <div class="fc rv">
                 <div class="fi c">🔌</div>
                 <h3>REST API Ingestion</h3>
-                <p>POST endpoints for every schema. Programmatic ingestion with validation, transformation, and streaming — all in one call.</p>
+                <p>POST /api/ingest/{schema_name} for every configured schema. Programmatic ingestion with validation, transformation, and streaming — all in one call.</p>
             </div>
             <div class="fc rv">
                 <div class="fi v">⚙️</div>
                 <h3>Config-Driven Schemas</h3>
-                <p>JSON configs define field mappings, types, required fields, and derived calculations. No code changes — just update the config.</p>
+                <p>JSON configs in data_config/ define field mappings, types, required fields, and derived calculations. Add a new data type by adding a config file.</p>
             </div>
             <div class="fc rv">
                 <div class="fi a">⚡</div>
                 <h3>Kafka-Compatible Streaming</h3>
-                <p>Publish to Redpanda, Azure Event Hubs, or any Kafka-protocol broker. Deterministic keys for idempotent delivery. Consumer included.</p>
+                <p>Publish to Redpanda, Azure Event Hubs, or any Kafka-protocol broker. Deterministic keys for idempotent delivery. JSONL file output always available.</p>
             </div>
             <div class="fc rv">
-                <div class="fi r">📊</div>
-                <h3>Live Dashboard</h3>
-                <p>Svelte-powered real-time dashboard. Throughput charts, event filtering, recent events with expand/inspect. Plus Metrics API and Swagger UI.</p>
+                <div class="fi r">🛰️</div>
+                <h3>Remote Monitoring</h3>
+                <p>Integration layers register with the Conduo Controller and send heartbeats every 30 seconds. Track status, license, throughput, and total events — from anywhere.</p>
             </div>
             <div class="fc rv">
-                <div class="fi e">🧮</div>
-                <h3>Derived Fields &amp; Validation</h3>
-                <p>Compute line totals, discount amounts, and custom formulas at ingestion time. Required field validation with detailed error reporting.</p>
+                <div class="fi e">🔒</div>
+                <h3>Outbound-Only Security</h3>
+                <p>Integration layers call out to the controller — never the other way round. No inbound connections, no open ports, no firewall changes. Deploy behind any network.</p>
             </div>
         </div>
     </div>
@@ -557,7 +622,7 @@
             <div class="pc rv">
                 <div class="pc-tier">Growth</div>
                 <div class="pc-name">Launch</div>
-                <p class="pc-desc">Multi-schema ingestion with Kafka streaming for growing retail operations.</p>
+                <p class="pc-desc">Multi-schema ingestion with Kafka streaming for growing operations.</p>
                 <div class="pc-amt"><span class="cur">£</span><span class="val">2,500</span></div>
                 <div class="pc-per">per month · billed annually</div>
                 <ul class="pc-list">
@@ -581,7 +646,7 @@
             <div class="pc hl rv">
                 <div class="pc-tier">Professional</div>
                 <div class="pc-name">Scale</div>
-                <p class="pc-desc">Full retail data pipeline with all schemas, Event Hubs, and priority support.</p>
+                <p class="pc-desc">Full data pipeline with all schemas, Event Hubs, and priority support.</p>
                 <div class="pc-amt"><span class="cur">£</span><span class="val">5,000</span></div>
                 <div class="pc-per">per month · billed annually</div>
                 <ul class="pc-list">
@@ -663,11 +728,11 @@
     <div class="wrap">
         <div class="tag rv">Use Cases</div>
         <div class="stitle rv">Proven in production</div>
-        <p class="sdesc rv">From weekly file drops to real-time POS streaming — Conduo handles retail data at every scale.</p>
+        <p class="sdesc rv">From weekly file drops to real-time streaming — Conduo handles operational data at every scale.</p>
 
         <div class="ucgrid">
             <div class="uc rv">
-                <div class="uc-tag">Multi-Brand Retail</div>
+                <div class="uc-tag">Retail</div>
                 <h3>POS Data Pipeline — 60+ Stores</h3>
                 <p>Caribbean retail group streaming POS transaction lines from pipe-delimited files into Kafka for real-time inventory sync. Replaced nightly batch with file watcher + event streaming.</p>
                 <div class="uc-met">
@@ -676,27 +741,27 @@
                 </div>
             </div>
             <div class="uc rv">
-                <div class="uc-tag">Construction Platform</div>
-                <h3>Scheduled Data Feed — Weekly</h3>
-                <p>Construction marketplace receiving planning application data via file drop. Auto-parsed, validated against schema config, and delivered as JSONL. Zero code, zero maintenance.</p>
+                <div class="uc-tag">Construction</div>
+                <h3>Planning Application Data Feed</h3>
+                <p>Construction marketplace receiving planning application data via weekly file drop. Auto-parsed against schema config, validated, and delivered as JSONL into the platform database.</p>
                 <div class="uc-met">
                     <strong>£500/mo</strong>
                     <span>vs £2k/mo custom dev</span>
                 </div>
             </div>
             <div class="uc rv">
-                <div class="uc-tag">Inventory Management</div>
-                <h3>BOH Inventory Consolidation</h3>
-                <p>Back-of-house inventory data from multiple store systems normalised into consistent events. File watch ingestion with derived stock level calculations streamed to analytics.</p>
+                <div class="uc-tag">Supply Chain</div>
+                <h3>Shipment &amp; Inventory Consolidation</h3>
+                <p>Multi-source inventory and shipment data normalised into consistent events. File watch ingestion with derived calculations streamed to analytics and downstream services.</p>
                 <div class="uc-met">
-                    <strong>7</strong>
-                    <span>schema types supported</span>
+                    <strong>8</strong>
+                    <span>schema types and growing</span>
                 </div>
             </div>
             <div class="uc rv">
-                <div class="uc-tag">Product Data</div>
+                <div class="uc-tag">Platform Integration</div>
                 <h3>Master Data Sync via REST API</h3>
-                <p>Product master and hierarchy data ingested via REST endpoints. Validated, enriched with metadata, and published to Event Hubs for downstream microservices consumption.</p>
+                <p>Product and site master data ingested via REST endpoints. Validated, enriched with metadata, and published to Event Hubs for downstream microservices consumption.</p>
                 <div class="uc-met">
                     <strong>2,847</strong>
                     <span>events/sec throughput</span>
@@ -735,7 +800,43 @@
             </div>
             <div class="faq rv">
                 <h4>Who's behind Conduo?</h4>
-                <p>Built by Resolutis, a specialist consultancy with 25+ years in enterprise integration, embedded systems, and retail technology. Background includes Apple, Google, JLR, and NXP.</p>
+                <p>Built by Resolutis, a specialist consultancy with 25+ years in enterprise integration, embedded systems, and operational technology. Background includes Apple, Google, JLR, and NXP.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section>
+    <div class="wrap tc">
+        <div class="tag rv">Coming Soon</div>
+        <div class="stitle rv">AI-powered API configuration</div>
+        <p class="sdesc c rv">Describe your data in plain language. Conduo's AI generates the schema config, field mappings, validation rules, and REST API endpoints automatically.</p>
+
+        <div class="how-grid" style="max-width:780px;margin:0 auto;grid-template-columns:1fr 1fr">
+            <div class="how-card rv" style="text-align:left">
+                <h3 style="margin-top:0">Today — Config-Driven</h3>
+                <p>You write JSON configs manually. Define field mappings, types, derived fields, and validation rules. Full control, full flexibility.</p>
+                <code>{
+  "schema": "planning_application",
+  "fields": [
+    {"source": "REF", "target": "ref"},
+    {"source": "STATUS", "target": "status"}
+  ]
+}</code>
+            </div>
+            <div class="how-card rv" style="text-align:left;border-color:var(--border-2);border-style:dashed">
+                <h3 style="margin-top:0">Tomorrow — AI-Configured</h3>
+                <p>Describe what you need. AI generates the config, creates the REST endpoint, suggests validation rules, and maps fields intelligently.</p>
+                <code style="color:var(--cyan)"><span style="color:var(--amber)">prompt:</span> "I need to ingest weekly
+planning application CSVs with
+reference, address, status, and
+decision date. Stream to Kafka."
+
+<span style="color:var(--em)">→ schema config generated</span>
+<span style="color:var(--em)">→ REST endpoint created</span>
+<span style="color:var(--em)">→ validation rules suggested</span>
+<span style="color:var(--em)">→ pipeline ready</span></code>
             </div>
         </div>
     </div>
@@ -743,7 +844,7 @@
 
 <!-- CTA -->
 <section id="contact" class="cta">
-    <div class="stitle rv">Ready to bring your<br>retail data <em style="font-family:var(--display);background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">together?</em></div>
+    <div class="stitle rv">Ready to bring your<br>data <em style="font-family:var(--display);background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">together?</em></div>
     <p class="rv">30-minute demo. We'll run your data through Conduo live and show you events streaming in real-time.</p>
     <div class="hero-actions rv">
         <a href="mailto:hello@conduo.ai" class="btn btn-e btn-lg">Book a Demo →</a>
