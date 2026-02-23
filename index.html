@@ -3,481 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conduo — Real-Time Data for Retail & Distributed Enterprise</title>
+    <title>Conduo — Integration that deploys where your data lives</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #07080a;
-            --bg-2: #0d0f13;
-            --bg-3: #13161c;
-            --bg-4: #191d25;
-            --bg-5: #1f242e;
-            --border: #1e2330;
-            --border-2: #2a3040;
-            --text: #edf0f7;
-            --text-2: #9aa2b8;
-            --text-3: #6b7490;
-            --text-4: #464f66;
-            --em: #00d4aa;
-            --em2: #00f0c0;
-            --em-dim: rgba(0,212,170,0.08);
-            --em-glow: rgba(0,212,170,0.12);
-            --cyan: #00b4d8;
-            --cyan-dim: rgba(0,180,216,0.08);
-            --violet: #7c5cfc;
-            --violet-dim: rgba(124,92,252,0.08);
-            --amber: #ffb020;
-            --amber-dim: rgba(255,176,32,0.08);
-            --rose: #ff4f6d;
-            --rose-dim: rgba(255,79,109,0.08);
-            --display: 'Playfair Display', Georgia, serif;
-            --sans: 'Manrope', -apple-system, sans-serif;
-            --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
-            --r: 16px;
-        }
-
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
-        a{color:inherit;text-decoration:none}
-        body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+        :root{--bg:#07080a;--bg-2:#0d0f13;--bg-3:#13161c;--bg-4:#191d25;--bg-5:#1f242e;--border:#1e2330;--border-2:#2a3040;--text:#edf0f7;--text-2:#9aa2b8;--text-3:#6b7490;--text-4:#464f66;--em:#00d4aa;--em2:#00f0c0;--em-dim:rgba(0,212,170,0.08);--em-glow:rgba(0,212,170,0.12);--cyan:#00b4d8;--cyan-dim:rgba(0,180,216,0.08);--violet:#7c5cfc;--violet-dim:rgba(124,92,252,0.08);--amber:#ffb020;--amber-dim:rgba(255,176,32,0.08);--rose:#ff4f6d;--rose-dim:rgba(255,79,109,0.08);--rust:#f74c00;--rust-dim:rgba(247,76,0,0.10);--display:'Playfair Display',Georgia,serif;--sans:'Manrope',-apple-system,sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',Consolas,monospace;--r:16px}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}
 
         /* NAV */
-        .nav{position:fixed;top:0;width:100%;z-index:100;padding:0.9rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px) saturate(1.3);background:rgba(7,8,10,0.8);border-bottom:1px solid var(--border)}
-        .nav-brand{display:flex;align-items:center;gap:0.5rem}
-        .nav-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--em),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.75rem;color:var(--bg)}
-        .nav-name{font-weight:800;font-size:1.15rem;letter-spacing:-0.04em}
-        .nav-name .ai{color:var(--em);font-weight:600;font-size:0.8rem;margin-left:0.15rem;vertical-align:super}
-        .nav-links{display:flex;align-items:center;gap:1.75rem}
-        .nav-links a{font-size:0.82rem;font-weight:500;color:var(--text-2);transition:color 0.2s}
-        .nav-links a:hover{color:var(--text)}
+        .nav{position:fixed;top:0;width:100%;z-index:100;padding:0.9rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px) saturate(1.3);background:rgba(7,8,10,0.8);border-bottom:1px solid var(--border)}.nav-brand{display:flex;align-items:center;gap:0.5rem}.nav-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--em),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.75rem;color:var(--bg)}.nav-name{font-weight:800;font-size:1.15rem;letter-spacing:-0.04em}.nav-name .ai{color:var(--em);font-weight:600;font-size:0.8rem;margin-left:0.15rem;vertical-align:super}.nav-links{display:flex;align-items:center;gap:1.75rem}.nav-links a{font-size:0.82rem;font-weight:500;color:var(--text-2);transition:color 0.2s}.nav-links a:hover{color:var(--text)}
 
-        .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.65rem 1.5rem;border-radius:10px;font-family:var(--sans);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;transition:all 0.25s ease}
-        .btn-e{background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg)}
-        .btn-e:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,170,0.25)}
-        .btn-o{background:var(--bg-3);color:var(--text);border:1px solid var(--border)}
-        .btn-o:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-2px)}
-        .btn-lg{padding:0.9rem 2.2rem;font-size:0.92rem;border-radius:12px}
-        .btn-sm{padding:0.5rem 1.15rem;font-size:0.8rem}
+        /* BUTTONS */
+        .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.65rem 1.5rem;border-radius:10px;font-family:var(--sans);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;transition:all 0.25s ease}.btn-e{background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg)}.btn-e:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,170,0.25)}.btn-o{background:var(--bg-3);color:var(--text);border:1px solid var(--border)}.btn-o:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-2px)}.btn-lg{padding:0.9rem 2.2rem;font-size:0.92rem;border-radius:12px}.btn-sm{padding:0.5rem 1.15rem;font-size:0.8rem}
 
         /* HERO */
-        .hero{padding:11rem 2rem 5rem;text-align:center;position:relative;overflow:hidden}
-        .hero::before{content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 40% 40%,rgba(0,212,170,0.06) 0%,transparent 50%),radial-gradient(ellipse at 60% 60%,rgba(0,180,216,0.04) 0%,transparent 50%);pointer-events:none}
-        .hero-chip{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 1rem 0.35rem 0.55rem;border:1px solid var(--border);border-radius:100px;background:var(--bg-2);font-size:0.76rem;font-weight:600;color:var(--text-2);margin-bottom:2.5rem;animation:up .6s ease}
-        .hero-chip .dot{width:7px;height:7px;background:var(--em);border-radius:50%;animation:pulse 2s infinite}
-        .hero h1{font-family:var(--display);font-size:clamp(3rem,7vw,5.2rem);font-weight:400;line-height:1.06;letter-spacing:-0.02em;max-width:820px;margin:0 auto 1.5rem;animation:up .6s ease .05s both}
-        .hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .hero-sub{font-size:1.12rem;color:var(--text-2);max-width:580px;margin:0 auto 2.5rem;font-weight:400;line-height:1.65;animation:up .6s ease .1s both}
-        .hero-actions{display:flex;justify-content:center;gap:0.75rem;animation:up .6s ease .15s both;flex-wrap:wrap}
-        .hero-tech{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;animation:up .6s ease .2s both}
-        .hero-tech span{font-size:0.72rem;color:var(--text-4);font-weight:600;display:flex;align-items:center;gap:0.35rem}
-        .hero-tech span::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--text-4)}
+        .hero{padding:11rem 2rem 5rem;text-align:center;position:relative;overflow:hidden}.hero::before{content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 40% 40%,rgba(0,212,170,0.06) 0%,transparent 50%),radial-gradient(ellipse at 60% 60%,rgba(247,76,0,0.04) 0%,transparent 50%);pointer-events:none}.hero-chip{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 1rem 0.35rem 0.55rem;border:1px solid var(--border);border-radius:100px;background:var(--bg-2);font-size:0.76rem;font-weight:600;color:var(--text-2);margin-bottom:2.5rem;animation:up .6s ease}.hero-chip .dot{width:7px;height:7px;background:var(--rust);border-radius:50%;animation:pulse 2s infinite}.hero h1{font-family:var(--display);font-size:clamp(3rem,7vw,5.2rem);font-weight:400;line-height:1.06;letter-spacing:-0.02em;max-width:820px;margin:0 auto 1.5rem;animation:up .6s ease .05s both}.hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.12rem;color:var(--text-2);max-width:640px;margin:0 auto 2.5rem;font-weight:400;line-height:1.65;animation:up .6s ease .1s both}.hero-actions{display:flex;justify-content:center;gap:0.75rem;animation:up .6s ease .15s both;flex-wrap:wrap}.hero-tech{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;animation:up .6s ease .2s both;flex-wrap:wrap}.hero-tech span{font-size:0.72rem;color:var(--text-4);font-weight:600;display:flex;align-items:center;gap:0.35rem}.hero-tech span::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--text-4)}.hero-tech span.rs{color:var(--rust)}.hero-tech span.rs::before{background:var(--rust)}
+
+        /* RUST BANNER */
+        .rust-banner{background:var(--bg-2);border:1px solid rgba(247,76,0,0.2);border-radius:12px;padding:1.25rem 1.75rem;max-width:680px;margin:3rem auto 0;display:flex;align-items:center;gap:1.25rem;animation:up .8s ease .3s both}.rust-banner h3{font-size:0.92rem;font-weight:700;margin-bottom:0.2rem}.rust-banner h3 span{color:var(--rust)}.rust-banner p{font-size:0.78rem;color:var(--text-2);line-height:1.5}.rust-logo{width:42px;height:42px;flex-shrink:0;border-radius:10px;background:var(--rust-dim);display:grid;place-items:center;font-size:1.3rem}
 
         /* TERMINAL */
-        .terminal{max-width:780px;margin:4rem auto 0;animation:up .8s ease .25s both}
-        .term-window{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.4)}
-        .term-bar{display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border)}
-        .term-dot{width:10px;height:10px;border-radius:50%}
-        .term-dot.r{background:#ff5f57}.term-dot.y{background:#ffbd2e}.term-dot.g{background:#28ca41}
-        .term-bar span{font-size:0.68rem;color:var(--text-4);margin-left:0.5rem;font-weight:500;font-family:var(--mono)}
-        .term-body{padding:1.25rem 1.5rem;font-family:var(--mono);font-size:0.72rem;line-height:1.8;color:var(--text-2);overflow-x:auto}
-        .term-body .prompt{color:var(--em)}
-        .term-body .dim{color:var(--text-4)}
-        .term-body .hi{color:var(--em2)}
-        .term-body .cy{color:var(--cyan)}
-        .term-body .am{color:var(--amber)}
-        .term-body .ro{color:var(--rose)}
+        .terminal{max-width:780px;margin:3rem auto 0;animation:up .8s ease .25s both}.term-window{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.4)}.term-bar{display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border)}.td{width:10px;height:10px;border-radius:50%}.td.r{background:#ff5f57}.td.y{background:#ffbd2e}.td.g{background:#28ca41}.term-bar span{font-size:0.68rem;color:var(--text-4);margin-left:0.5rem;font-weight:500;font-family:var(--mono)}.term-body{padding:1.25rem 1.5rem;font-family:var(--mono);font-size:0.72rem;line-height:1.8;color:var(--text-2);overflow-x:auto}.term-body .p{color:var(--em)}.term-body .d{color:var(--text-4)}.term-body .h{color:var(--em2)}.term-body .c{color:var(--cyan)}.term-body .a{color:var(--amber)}.term-body .ro{color:var(--rose)}.term-body .rs{color:var(--rust)}
 
         /* PROOF */
-        .proof{padding:3rem 2rem;text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-        .proof-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-4);font-weight:700;margin-bottom:1.5rem}
-        .proof-logos{display:flex;justify-content:center;gap:3.5rem;flex-wrap:wrap}
-        .proof-logos span{font-size:0.95rem;font-weight:600;color:var(--text-3);opacity:0.6}
+        .proof{padding:3rem 2rem;text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.proof-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-4);font-weight:700;margin-bottom:1.5rem}.proof-logos{display:flex;justify-content:center;gap:3.5rem;flex-wrap:wrap}.proof-logos span{font-size:0.95rem;font-weight:600;color:var(--text-3);opacity:0.6}
 
-        /* LAYOUT */
-        .wrap{max-width:1140px;margin:0 auto;padding:0 2rem}
-        section{padding:7rem 0}
-        .tag{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;font-weight:700;margin-bottom:0.75rem;background:linear-gradient(135deg,var(--em),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .stitle{font-family:var(--display);font-size:clamp(2.2rem,4vw,3.2rem);font-weight:400;line-height:1.12;letter-spacing:-0.02em;margin-bottom:0.75rem}
-        .sdesc{font-size:1.02rem;color:var(--text-2);max-width:560px;margin-bottom:3.5rem;line-height:1.65}
-        .sdesc.c{margin-left:auto;margin-right:auto}
-        .tc{text-align:center}
+        /* SECTIONS */
+        .wrap{max-width:1140px;margin:0 auto;padding:0 2rem}section{padding:7rem 0}.tag{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;font-weight:700;margin-bottom:0.75rem;background:linear-gradient(135deg,var(--em),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stitle{font-family:var(--display);font-size:clamp(2.2rem,4vw,3.2rem);font-weight:400;line-height:1.12;letter-spacing:-0.02em;margin-bottom:0.75rem}.sdesc{font-size:1.02rem;color:var(--text-2);max-width:560px;margin-bottom:3.5rem;line-height:1.65}.sdesc.cen{margin-left:auto;margin-right:auto}.tc{text-align:center}
 
         /* HOW IT WORKS */
-        .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-        .how-card{position:relative;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem 1.75rem;transition:all 0.3s}
-        .how-card:hover{border-color:var(--border-2);transform:translateY(-4px)}
-        .how-num{position:absolute;top:-14px;left:1.75rem;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:0.7rem;font-weight:800;color:var(--bg)}
-        .how-num.n1{background:var(--em)}.how-num.n2{background:var(--cyan)}.how-num.n3{background:var(--violet)}
-        .how-card h3{font-size:1rem;font-weight:700;margin:0.75rem 0 0.5rem}
-        .how-card p{font-size:0.86rem;color:var(--text-2);line-height:1.55}
-        .how-card code{display:block;margin-top:1rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:0.65rem;color:var(--em);font-family:var(--mono);line-height:1.7;white-space:pre;overflow-x:auto}
-
-        /* SCHEMAS */
-        .schema-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:2rem}
-        .schema{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;transition:all 0.2s;text-align:left}
-        .schema:hover{border-color:var(--border-2);background:var(--bg-4)}
-        .schema-icon{font-size:1.1rem;margin-bottom:0.5rem}
-        .schema h4{font-size:0.82rem;font-weight:700;margin-bottom:0.2rem}
-        .schema p{font-size:0.7rem;color:var(--text-3);line-height:1.4}
-        .schema-tag{display:inline-block;margin-top:0.5rem;padding:0.15rem 0.4rem;border-radius:4px;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;font-family:var(--mono)}
-        .schema-tag.live{background:var(--em-dim);color:var(--em)}
+        .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}.how-card{position:relative;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem 1.75rem;transition:all 0.3s}.how-card:hover{border-color:var(--border-2);transform:translateY(-4px)}.how-num{position:absolute;top:-14px;left:1.75rem;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:0.7rem;font-weight:800;color:var(--bg)}.how-num.n1{background:var(--em)}.how-num.n2{background:var(--cyan)}.how-num.n3{background:var(--violet)}.how-card h3{font-size:1rem;font-weight:700;margin:0.75rem 0 0.5rem}.how-card p{font-size:0.86rem;color:var(--text-2);line-height:1.55}.how-card code{display:block;margin-top:1rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:0.65rem;color:var(--em);font-family:var(--mono);line-height:1.7;white-space:pre;overflow-x:auto}
 
         /* FEATURES */
-        .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
-        .fc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;transition:all 0.3s}
-        .fc:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-3px)}
-        .fi{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;margin-bottom:1.1rem}
-        .fi.e{background:var(--em-dim)}.fi.c{background:var(--cyan-dim)}.fi.v{background:var(--violet-dim)}.fi.a{background:var(--amber-dim)}.fi.r{background:var(--rose-dim)}
-        .fc h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem}
-        .fc p{color:var(--text-2);font-size:0.85rem;line-height:1.55}
+        .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.fc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;transition:all 0.3s}.fc:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-3px)}.fi{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;margin-bottom:1.1rem}.fi.e{background:var(--em-dim)}.fi.cy{background:var(--cyan-dim)}.fi.v{background:var(--violet-dim)}.fi.am{background:var(--amber-dim)}.fi.ro{background:var(--rose-dim)}.fi.rs{background:var(--rust-dim)}.fc h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem}.fc p{color:var(--text-2);font-size:0.85rem;line-height:1.55}
 
-        /* DASHBOARD PREVIEW */
-        .dash-preview{margin-top:2rem;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-        .dash-bar{padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-        .dash-bar-l{display:flex;align-items:center;gap:0.5rem}
-        .dash-bar-l .term-dot{width:8px;height:8px}
-        .dash-bar span{font-size:0.68rem;color:var(--text-4);font-family:var(--mono)}
-        .dash-body{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:220px}
-        .dash-panel{padding:1.25rem;border-right:1px solid var(--border)}
-        .dash-panel:last-child{border-right:none}
-        .dash-panel-title{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:700;margin-bottom:0.75rem}
-        .dash-metric{font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.25rem}
-        .dash-metric.green{color:var(--em)}
-        .dash-sub{font-size:0.7rem;color:var(--text-3)}
-        .dash-chart{display:flex;align-items:flex-end;gap:3px;height:80px;margin-top:0.75rem}
-        .dash-chart-bar{flex:1;border-radius:3px 3px 0 0;min-width:4px;transition:height 0.3s}
-        .dash-chart-bar.g{background:var(--em);opacity:0.6}
-        .dash-chart-bar.g:hover{opacity:1}
-        .dash-events{list-style:none}
-        .dash-event{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;font-size:0.7rem;font-family:var(--mono);color:var(--text-2);border-bottom:1px solid var(--border)}
-        .dash-event:last-child{border-bottom:none}
-        .dash-event-type{padding:0.15rem 0.4rem;border-radius:4px;font-size:0.58rem;font-weight:700;text-transform:uppercase;min-width:55px;text-align:center}
-        .dash-event-type.pos{background:var(--em-dim);color:var(--em)}
-        .dash-event-type.prod{background:var(--cyan-dim);color:var(--cyan)}
-        .dash-event-type.inv{background:var(--violet-dim);color:var(--violet)}
-        .dash-event-type.ship{background:var(--amber-dim);color:var(--amber)}
-        .dash-event-time{color:var(--text-4);margin-left:auto;font-size:0.62rem}
+        /* SCHEMAS */
+        .schema-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:2rem}.schema{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;transition:all 0.2s;text-align:left}.schema:hover{border-color:var(--border-2);background:var(--bg-4)}.schema-icon{font-size:1.1rem;margin-bottom:0.5rem}.schema h4{font-size:0.82rem;font-weight:700;margin-bottom:0.2rem}.schema p{font-size:0.7rem;color:var(--text-3);line-height:1.4}.stag{display:inline-block;margin-top:0.5rem;padding:0.15rem 0.4rem;border-radius:4px;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;font-family:var(--mono)}.stag.live{background:var(--em-dim);color:var(--em)}
+
+        /* AI SECTION */
+        .ai-section{background:linear-gradient(180deg,var(--bg-2),var(--bg));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;max-width:900px;margin:0 auto}.ai-card{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;position:relative;overflow:hidden}.ai-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at top right,rgba(124,92,252,0.06),transparent 70%);pointer-events:none}.ai-card h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}.ai-card p{font-size:0.82rem;color:var(--text-2);line-height:1.55}.ai-badge{font-size:0.52rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.2rem 0.5rem;border-radius:4px;background:var(--violet-dim);color:var(--violet)}.ai-demo{margin-top:1rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:0.62rem;line-height:1.7;color:var(--text-3)}
+
+        /* OSS SECTION */
+        .oss-section{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}.oss-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:0 auto}.oss-box{padding:1.5rem;border:1px solid var(--border);border-radius:var(--r);background:var(--bg-3)}.oss-box ul{list-style:none}.oss-box ul li{font-size:0.8rem;color:var(--text-2);padding:0.25rem 0;display:flex;align-items:center;gap:0.5rem}.oss-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;padding:0.2rem 0.5rem;border-radius:4px;display:inline-block;margin-bottom:0.75rem}.oss-label.open{background:var(--em-dim);color:var(--em)}.oss-label.closed{background:var(--rose-dim);color:var(--rose)}
+
+        /* DASHBOARD PREVIEWS */
+        .dash-preview{margin-top:2rem;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden}.dash-bar{padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.dash-bar-l{display:flex;align-items:center;gap:0.5rem}.dash-bar-l .td{width:8px;height:8px}.dash-bar span{font-size:0.68rem;color:var(--text-4);font-family:var(--mono)}.dash-body{display:grid;grid-template-columns:1fr 1fr;min-height:220px}.dash-panel{padding:1.25rem;border-right:1px solid var(--border)}.dash-panel:last-child{border-right:none}.dash-panel-title{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:700;margin-bottom:0.75rem}.dash-metric{font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.25rem}.dash-metric.green{color:var(--em)}.dash-sub{font-size:0.7rem;color:var(--text-3)}.dash-chart{display:flex;align-items:flex-end;gap:3px;height:80px;margin-top:0.75rem}.db{flex:1;border-radius:3px 3px 0 0;min-width:4px;background:var(--em);opacity:0.6}.dash-events{list-style:none}.de{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;font-size:0.7rem;font-family:var(--mono);color:var(--text-2);border-bottom:1px solid var(--border)}.de:last-child{border-bottom:none}.det{padding:0.15rem 0.4rem;border-radius:4px;font-size:0.58rem;font-weight:700;text-transform:uppercase;min-width:55px;text-align:center}.det.pos{background:var(--em-dim);color:var(--em)}.det.prod{background:var(--cyan-dim);color:var(--cyan)}.det.inv{background:var(--violet-dim);color:var(--violet)}.det.ship{background:var(--amber-dim);color:var(--amber)}.de-time{color:var(--text-4);margin-left:auto;font-size:0.62rem}
 
         /* PRICING */
-        .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
-        .pc{background:var(--bg-3);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;display:flex;flex-direction:column;transition:all 0.3s;position:relative}
-        .pc:hover{transform:translateY(-4px)}
-        .pc.hl{border-color:var(--em);box-shadow:0 0 80px rgba(0,212,170,0.06),0 0 0 1px var(--em)}
-        .pc.hl::after{content:'Recommended';position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg);font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.25rem 0.9rem;border-radius:100px}
-        .pc-tier{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--em);margin-bottom:0.3rem}
-        .pc-name{font-family:var(--display);font-size:1.35rem;font-weight:400;margin-bottom:0.35rem}
-        .pc-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5;margin-bottom:1.25rem;min-height:2.5rem}
-        .pc-amt{display:flex;align-items:baseline;gap:0.1rem;margin-bottom:0.1rem}
-        .pc-amt .cur{font-size:1rem;font-weight:600;color:var(--text-3)}
-        .pc-amt .val{font-size:2.4rem;font-weight:800;letter-spacing:-0.04em;line-height:1}
-        .pc-per{font-size:0.72rem;color:var(--text-4);margin-bottom:1.5rem}
-        .pc-list{list-style:none;flex:1}
-        .pc-list li{font-size:0.8rem;color:var(--text-2);padding:0.35rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4}
-        .pc-list li::before{content:'✓';color:var(--em);font-weight:700;font-size:0.72rem;flex-shrink:0;margin-top:2px}
-        .pc-div{height:1px;background:var(--border);margin:1.1rem 0}
-        .pc-slbl{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:700;margin-bottom:0.5rem}
-        .pc-cta{width:100%;justify-content:center;margin-top:1.25rem}
-
-        /* ADDONS */
-        .ao-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.25rem}
-        .ao{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:1.15rem;transition:border-color 0.2s}
-        .ao:hover{border-color:var(--border-2)}
-        .ao h4{font-size:0.82rem;font-weight:700;margin-bottom:0.2rem}
-        .ao-pr{font-size:0.95rem;font-weight:800;color:var(--em);margin-bottom:0.3rem}
-        .ao p{font-size:0.73rem;color:var(--text-2);line-height:1.45}
+        .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}.pc{background:var(--bg-3);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;display:flex;flex-direction:column;transition:all 0.3s;position:relative}.pc:hover{transform:translateY(-4px)}.pc.hl{border-color:var(--em);box-shadow:0 0 80px rgba(0,212,170,0.06),0 0 0 1px var(--em)}.pc.hl::after{content:'Most Popular';position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg);font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.25rem 0.9rem;border-radius:100px}.pc-tier{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--em);margin-bottom:0.3rem}.pc-name{font-family:var(--display);font-size:1.35rem;font-weight:400;margin-bottom:0.35rem}.pc-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5;margin-bottom:1.25rem;min-height:2.5rem}.pc-list{list-style:none;flex:1}.pc-list li{font-size:0.8rem;color:var(--text-2);padding:0.35rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4}.pc-list li::before{content:'✓';color:var(--em);font-weight:700;font-size:0.72rem;flex-shrink:0;margin-top:2px}.pc-cta{width:100%;justify-content:center;margin-top:1.25rem}
 
         /* USE CASES */
-        .ucgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
-        .uc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem;transition:all 0.3s}
-        .uc:hover{border-color:var(--border-2);transform:translateY(-2px)}
-        .uc-tag{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--amber);margin-bottom:0.6rem}
-        .uc h3{font-size:1rem;font-weight:700;margin-bottom:0.45rem}
-        .uc p{font-size:0.84rem;color:var(--text-2);line-height:1.55}
-        .uc-met{margin-top:1.1rem;display:flex;align-items:baseline;gap:0.5rem}
-        .uc-met strong{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .uc-met span{font-size:0.75rem;color:var(--text-4)}
+        .ucgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}.uc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem;transition:all 0.3s}.uc:hover{border-color:var(--border-2);transform:translateY(-2px)}.uc-tag{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--amber);margin-bottom:0.6rem}.uc h3{font-size:1rem;font-weight:700;margin-bottom:0.45rem}.uc p{font-size:0.84rem;color:var(--text-2);line-height:1.55}.uc-met{margin-top:1.1rem;display:flex;align-items:baseline;gap:0.5rem}.uc-met strong{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.uc-met span{font-size:0.75rem;color:var(--text-4)}
 
         /* FAQ */
-        .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
-        .faq{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 1.75rem}
-        .faq h4{font-size:0.9rem;font-weight:700;margin-bottom:0.45rem}
-        .faq p{font-size:0.84rem;color:var(--text-2);line-height:1.55}
+        .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}.faq{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 1.75rem}.faq h4{font-size:0.9rem;font-weight:700;margin-bottom:0.45rem}.faq p{font-size:0.84rem;color:var(--text-2);line-height:1.55}
 
         /* CTA */
-        .cta{text-align:center;padding:7rem 2rem 8rem;position:relative}
-        .cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse,var(--em-dim) 0%,transparent 65%);pointer-events:none}
-        .cta .stitle{margin-bottom:0.75rem}
-        .cta p{color:var(--text-2);max-width:480px;margin:0 auto 2rem;font-size:1.02rem}
+        .cta{text-align:center;padding:7rem 2rem 8rem;position:relative}.cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse,var(--em-dim) 0%,transparent 65%);pointer-events:none}.cta .stitle{margin-bottom:0.75rem}.cta p{color:var(--text-2);max-width:480px;margin:0 auto 2rem;font-size:1.02rem}
 
         /* FOOTER */
-        .foot{border-top:1px solid var(--border);padding:2.5rem 2rem;max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-        .foot-l p{font-size:0.75rem;color:var(--text-4)}
-        .foot-l .fb{font-weight:800;font-size:0.88rem;color:var(--text-3);margin-bottom:0.2rem;letter-spacing:-0.02em}
-        .foot-r{display:flex;gap:1.5rem}
-        .foot-r a{font-size:0.78rem;color:var(--text-2);transition:color 0.2s}
-        .foot-r a:hover{color:var(--text)}
+        .foot{border-top:1px solid var(--border);padding:2.5rem 2rem;max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.foot-l p{font-size:0.75rem;color:var(--text-4)}.foot-l .fb{font-weight:800;font-size:0.88rem;color:var(--text-3);margin-bottom:0.2rem;letter-spacing:-0.02em}.foot-r{display:flex;gap:1.5rem}.foot-r a{font-size:0.78rem;color:var(--text-2);transition:color 0.2s}.foot-r a:hover{color:var(--text)}
 
-        @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-        .rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
-        .rv.vis{opacity:1;transform:translateY(0)}
-
-        @media(max-width:1024px){.pgrid{grid-template-columns:repeat(2,1fr)}.schema-grid{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:900px){
-            .fgrid,.how-grid,.faq-grid{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}
-            .pgrid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}
-            .ao-grid{grid-template-columns:repeat(2,1fr)}.ucgrid{grid-template-columns:1fr}
-            .dash-body{grid-template-columns:1fr}
-            .dash-panel{border-right:none;border-bottom:1px solid var(--border)}
-            .nav-links{display:none}.foot{flex-direction:column;gap:1.5rem;text-align:center}
-            .schema-grid{grid-template-columns:1fr}
-        }
-        @media(max-width:600px){.ao-grid{grid-template-columns:1fr}.hero-actions{flex-direction:column;align-items:center}}
+        @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}.rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}.rv.vis{opacity:1;transform:translateY(0)}
+        @media(max-width:1024px){.pgrid,.schema-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:900px){.fgrid,.how-grid,.faq-grid,.ai-grid{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}.pgrid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}.ucgrid,.oss-grid{grid-template-columns:1fr}.dash-body{grid-template-columns:1fr}.dash-panel{border-right:none;border-bottom:1px solid var(--border)}.nav-links{display:none}.foot{flex-direction:column;gap:1.5rem;text-align:center}.schema-grid{grid-template-columns:1fr}.rust-banner{flex-direction:column;text-align:center}}
+        @media(max-width:600px){.hero-actions{flex-direction:column;align-items:center}}
     </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav">
-    <a href="/" class="nav-brand">
-        <div class="nav-icon">C</div>
-        <span class="nav-name">conduo<span class="ai">.ai</span></span>
-    </a>
+    <a href="/" class="nav-brand"><div class="nav-icon">C</div><span class="nav-name">conduo<span class="ai">.ai</span></span></a>
     <div class="nav-links">
         <a href="#how-it-works">How It Works</a>
         <a href="#features">Features</a>
-        <a href="#schemas">Data Types</a>
+        <a href="#ai">AI</a>
+        <a href="#open-source">Open Source</a>
         <a href="#pricing">Pricing</a>
+        <a href="https://github.com/conduo-ai" class="btn btn-o btn-sm">★ GitHub</a>
         <a href="#contact" class="btn btn-e btn-sm">Book a Demo</a>
     </div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
-    <div class="hero-chip">
-        <span class="dot"></span>
-        Live — streaming data in production
-    </div>
-    <h1>Real-Time Data for<br><em>Retail & Distributed Enterprise</em></h1>
-    <p class="hero-sub">Config-driven ETL that ingests files and APIs, normalises into events, and streams to Kafka or JSONL. From edge devices to enterprise — deployed anywhere, monitored from the cloud.</p>
+    <div class="hero-chip"><span class="dot"></span>Open source · written in Rust</div>
+    <h1>Integration that deploys<br><em>where your data lives</em></h1>
+    <p class="hero-sub">Open source integration platform written in Rust. Ingest files and REST APIs, validate and transform with JSON configs, stream to Kafka or JSONL. Sign up, configure, stream. Fast, safe, observable.</p>
     <div class="hero-actions">
-        <a href="#contact" class="btn btn-e btn-lg">Book a Demo →</a>
-        <a href="#how-it-works" class="btn btn-o btn-lg">See How It Works</a>
+        <a href="https://github.com/conduo-ai" class="btn btn-e btn-lg">★ Star on GitHub</a>
+        <a href="#contact" class="btn btn-o btn-lg">Book a Demo →</a>
     </div>
     <div class="hero-tech">
-        <span>Go</span>
-        <span>Svelte</span>
-        <span>Kafka Protocol</span>
-        <span>OpenAPI 3</span>
+        <span class="rs">Rust</span><span>Kafka / Redpanda</span><span>OpenAPI 3</span><span>Svelte</span><span>Docker</span>
     </div>
 
-    <!-- TERMINAL -->
+    <div class="rust-banner">
+        <div class="rust-logo">🦀</div>
+        <div>
+            <h3>Built in <span>Rust</span> — fast and memory-safe</h3>
+            <p>Zero garbage collection. Sub-millisecond latency at thousands of events per second. Single static binary, no runtime dependencies. Built by a maintainer of <strong>kafka-rust</strong>.</p>
+        </div>
+    </div>
+
     <div class="terminal">
         <div class="term-window">
             <div class="term-bar">
-                <div style="display:flex;gap:0.4rem"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
-                <span>conduo — pipeline output</span>
+                <div style="display:flex;gap:0.4rem"><div class="td r"></div><div class="td y"></div><div class="td g"></div></div>
+                <span>conduo — integration_layer_rs</span>
             </div>
             <div class="term-body">
-<span class="prompt">$</span> conduo start --config data_config/ --watch /data/incoming/
-<span class="dim">loading schemas from data_config/...</span>
-<span class="cy">  ├─ pos_transaction_line</span>  <span class="cy">├─ boh_inventory</span>  <span class="cy">├─ product_master</span>
-<span class="cy">  ├─ shipment</span>  <span class="cy">├─ store_master</span>  <span class="cy">├─ planning_application</span>
-<span class="dim">registering with controller...</span>
-<span class="hi">✓ licensed</span> <span class="dim">— heartbeat every 30s → controller.conduo.ai</span>
+<span class="p">$</span> conduo start --config data_config/ --watch Data/
+<span class="d">loading schemas from data_config/...</span>
+<span class="c">  ├─ POS</span>  <span class="c">├─ boh_inventory</span>  <span class="c">├─ product_master</span>
+<span class="c">  ├─ shipment</span>  <span class="c">├─ store_master</span>  <span class="c">├─ product_hierarchy</span>
+<span class="rs">  ▸ rust engine</span> <span class="d">— zero-copy parsing, memory-safe pipeline</span>
+<span class="d">metrics API</span> <span class="h">:8081</span> <span class="d">(swagger at /api/metrics/docs)</span>
+<span class="d">ingestion API</span> <span class="h">:8090</span> <span class="d">(swagger at /api/docs)</span>
+<span class="d">registering with controller...</span> <span class="h">✓ connected</span> <span class="d">(heartbeat ~30s)</span>
 
-<span class="hi">▸ new file:</span> planning_apps_2026-02.csv <span class="dim">(2,847 lines)</span>
-<span class="cy">  ├─ schema:</span> planning_application
-<span class="cy">  ├─ validated:</span> <span class="hi">2,841 ok</span> <span class="ro">6 rejected</span>
-<span class="cy">  └─ output:</span> <span class="hi">kafka://events/planning</span> <span class="dim">+ planning_202602.jsonl</span>
+<span class="h">▸ watching:</span> Data/ <span class="d">for pipe-delimited files</span>
+<span class="h">▸ new file:</span> POS_store042_20260218.txt <span class="d">(14,847 lines)</span>
+<span class="c">  ├─ schema:</span> POS <span class="d">(via data_config/POS.json)</span>
+<span class="c">  ├─ validated:</span> <span class="h">14,832 ok</span> <span class="ro">15 rejected</span>
+<span class="c">  ├─ output:</span> <span class="h">kafka://conduo_events</span> <span class="d">+ POS_20260218.jsonl</span>
+<span class="c">  └─ time:</span> <span class="rs">238ms</span> <span class="d">(62,319 events/sec)</span>
 
-<span class="am">throughput:</span> 1,420 events/sec  <span class="am">status:</span> <span class="hi">● up</span>  <span class="am">controller:</span> <span class="hi">● connected</span>
+<span class="a">throughput:</span> 2,847 events/sec  <span class="a">sinks:</span> <span class="h">jsonl ✓</span> <span class="h">kafka ✓</span>  <span class="a">controller:</span> <span class="h">● connected</span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- PROOF -->
+<!-- ═══════════════ PROOF ═══════════════ -->
 <div class="proof">
-    <p class="proof-label">Trusted across retail, construction, and supply chain</p>
-    <div class="proof-logos">
-        <span>Impulse Logic</span>
-        <span>The Modern Builder</span>
-    </div>
+    <p class="proof-label">Open source engine · Proprietary management plane · AI coming soon</p>
+    <div class="proof-logos"><span>Rust</span><span>Kafka / Redpanda</span><span>Azure Event Hubs</span><span>Docker</span><span>OpenAPI 3</span></div>
 </div>
 
-<!-- HOW IT WORKS -->
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
 <section id="how-it-works">
     <div class="wrap tc">
         <div class="tag rv">How It Works</div>
-        <div class="stitle rv">Deploy. Connect. Monitor.</div>
-        <p class="sdesc c rv">Deploy an integration layer wherever your data lives. It ingests, transforms, and streams — then reports back to the Conduo Controller so you always know what's running.</p>
+        <div class="stitle rv">Sign up. Configure. Stream.</div>
+        <p class="sdesc cen rv">Create an account, define your schemas in JSON, point your data at Conduo. Events start streaming to Kafka and JSONL. Every deployment monitored from one dashboard.</p>
+
+        <!-- DATA FLOW -->
+        <div class="rv" style="max-width:680px;margin:0 auto 3rem;padding:1.5rem 2rem;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;font-family:var(--mono);font-size:0.72rem;text-align:center;line-height:2.2">
+            <div style="display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem">
+                <span style="padding:0.3rem 0.7rem;background:var(--amber-dim);color:var(--amber);border-radius:6px;font-weight:700">File Watch</span>
+                <span style="padding:0.3rem 0.7rem;background:var(--em-dim);color:var(--em);border-radius:6px;font-weight:700">REST API</span>
+                <span style="padding:0.3rem 0.7rem;background:var(--cyan-dim);color:var(--cyan);border-radius:6px;font-weight:700;opacity:0.5">SAP OData ⌛</span>
+                <span style="padding:0.3rem 0.7rem;background:var(--violet-dim);color:var(--violet);border-radius:6px;font-weight:700;opacity:0.5">Dynamics 365 ⌛</span>
+            </div>
+            <div style="color:var(--text-4);font-size:1.1rem">↓</div>
+            <div style="padding:0.4rem 1.2rem;background:linear-gradient(135deg,rgba(0,212,170,0.1),rgba(247,76,0,0.06));border:1px solid var(--em);border-radius:10px;display:inline-block;margin:0.15rem 0">
+                <span style="color:var(--em);font-weight:800">integration_layer_rs</span> <span style="color:var(--rust);font-weight:700;font-size:0.6rem">Rust</span><br>
+                <span style="color:var(--text-3);font-size:0.6rem">validate → transform → enrich → event bus → sinks</span>
+            </div>
+            <div style="color:var(--text-4);font-size:1.1rem">↓</div>
+            <div style="display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap;margin:0.15rem 0">
+                <span style="padding:0.3rem 0.7rem;background:var(--em-dim);color:var(--em);border-radius:6px;font-weight:700">JSONL</span>
+                <span style="padding:0.3rem 0.7rem;background:var(--em-dim);color:var(--em);border-radius:6px;font-weight:700">Kafka (conduo_events)</span>
+            </div>
+            <div style="color:var(--text-4);font-size:0.8rem;margin-top:0.25rem">↑ heartbeat ~30s ↑</div>
+            <div style="padding:0.3rem 0.7rem;background:var(--rose-dim);color:var(--rose);border-radius:6px;font-weight:700;display:inline-block;margin-top:0.25rem">Integrations Controller</div>
+        </div>
 
         <div class="how-grid">
             <div class="how-card rv">
                 <div class="how-num n1">1</div>
-                <h3>Configure &amp; Deploy</h3>
-                <p>Define schemas in JSON configs — field mappings, validation, derived fields. Deploy the integration layer on-prem, in the cloud, or on edge devices. Set a license key and controller URL.</p>
-                <code>{
-  "schema": "planning_application",
-  "delimiter": ",",
+                <h3>Sign Up &amp; Configure</h3>
+                <p>Create an account via the signup app. Define schemas in data_config/ — field mappings, types, validation rules, derived calculations via evalexpr. One JSON file per data type.</p>
+                <code><span style="color:var(--amber)">data_config/POS.json</span>
+{
+  "schema": "POS",
+  "delimiter": "|",
   "fields": [
-    {"source": "REF", "target": "ref", "required": true},
-    {"source": "ADDRESS", "target": "address"},
-    {"source": "STATUS", "target": "status"}
+    {"source": "STORE", "target": "store_id",
+     "required": true},
+    {"source": "QTY", "type": "integer"},
+    {"source": "NET_AMT", "type": "decimal"}
   ],
   "derived": [
-    {"field": "decision_days", "formula": "decided - submitted"}
+    {"field": "gross", "expr": "net_amount * 1.2"}
   ]
 }</code>
             </div>
             <div class="how-card rv">
                 <div class="how-num n2">2</div>
-                <h3>Ingest &amp; Stream</h3>
-                <p>Watch directories for new files or receive data via REST API. Events are validated, transformed, and published to Kafka, Event Hubs, or JSONL. Local dashboard shows throughput in real-time.</p>
+                <h3>Ingest</h3>
+                <p>Watch a directory for pipe-delimited files or POST data to the ingestion API at :8090 with API key auth. Both paths validate against the same schema configs.</p>
                 <code><span style="color:var(--amber)">File watcher:</span>
-  Watch /data/incoming/ for *.csv
-  Parse → validate → transform → stream
+  Data/*.txt → parse → validate → publish
 
-<span style="color:var(--cyan)">REST API:</span>
-  POST /api/ingest/planning_application
-  → validated, enriched, streamed
+<span style="color:var(--em)">REST API (:8090):</span>
+  POST /api/ingest/POS
+  Header: X-API-Key: {key}
+  OpenAPI + Swagger UI
 
-<span style="color:var(--em)">Outputs:</span>
-  → kafka://broker/planning-events
-  → /output/planning_202602.jsonl</code>
+<span style="color:var(--em)">Client tool:</span>
+  api_poster_rs --dir Data/ --api-key {key}</code>
             </div>
             <div class="how-card rv">
                 <div class="how-num n3">3</div>
-                <h3>Monitor Remotely</h3>
-                <p>Each integration layer registers with the Conduo Controller on startup and sends heartbeats every ~30 seconds. The controller tracks status, license validity, events/sec, and total events across all deployments.</p>
-                <code><span style="color:var(--em)">Outbound-only model:</span>
-  Layer → Controller (registration)
-  Layer → Controller (heartbeat ~30s)
+                <h3>Stream &amp; Monitor</h3>
+                <p>Events publish to Kafka and JSONL simultaneously. The integration layer registers with the controller and sends heartbeats every ~30 seconds. Fleet dashboard shows every deployment.</p>
+                <code><span style="color:var(--em)">Sinks (simultaneous):</span>
+  → kafka://conduo_events
+  → /output/POS_20260218.jsonl
 
-<span style="color:var(--em)">Controller tracks:</span>
-  ● up / ● stale / ● down
-  License validation
-  Events/sec per deployment
-  Total events across fleet</code>
+<span style="color:var(--em)">Controller:</span>
+  POST /api/register → deployment ID
+  POST /api/heartbeat (every ~30s)
+  GET  /api/deployments → fleet view
+
+<span style="color:var(--violet)">Dashboard:</span> ● up / ● stale / ● down</code>
             </div>
         </div>
     </div>
 </section>
 
-<!-- DASHBOARD -->
+<!-- ═══════════════ DASHBOARDS ═══════════════ -->
 <section id="dashboard">
     <div class="wrap tc">
         <div class="tag rv">Monitoring</div>
-        <div class="stitle rv">Two dashboards.<br>Full visibility.</div>
-        <p class="sdesc c rv">Every integration layer has a local Svelte dashboard for throughput and events. The Conduo Controller gives you a single view of every deployment — status, license, and throughput — from anywhere.</p>
+        <div class="stitle rv">Local dashboard.<br>Fleet controller.</div>
+        <p class="sdesc cen rv">Every integration layer has a local Svelte dashboard. The Integrations Controller gives you fleet-wide visibility — deployments, customers, licenses — from anywhere.</p>
 
-        <!-- Local Dashboard -->
         <div class="dash-preview rv" style="margin-bottom:1.5rem">
             <div class="dash-bar">
-                <div class="dash-bar-l">
-                    <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
-                    <span style="margin-left:0.5rem">integration layer — local dashboard</span>
-                </div>
-                <span>OpenAPI · Swagger UI</span>
+                <div class="dash-bar-l"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span style="margin-left:0.5rem">dashboard/ — localhost:8081</span></div>
+                <span>Metrics API · Swagger UI</span>
             </div>
             <div class="dash-body">
                 <div class="dash-panel">
                     <div class="dash-panel-title">Throughput</div>
                     <div class="dash-metric green">2,847</div>
                     <div class="dash-sub">events/sec — last 60s</div>
-                    <div class="dash-chart">
-                        <div class="dash-chart-bar g" style="height:45%"></div>
-                        <div class="dash-chart-bar g" style="height:62%"></div>
-                        <div class="dash-chart-bar g" style="height:55%"></div>
-                        <div class="dash-chart-bar g" style="height:78%"></div>
-                        <div class="dash-chart-bar g" style="height:90%"></div>
-                        <div class="dash-chart-bar g" style="height:85%"></div>
-                        <div class="dash-chart-bar g" style="height:72%"></div>
-                        <div class="dash-chart-bar g" style="height:68%"></div>
-                        <div class="dash-chart-bar g" style="height:82%"></div>
-                        <div class="dash-chart-bar g" style="height:95%"></div>
-                        <div class="dash-chart-bar g" style="height:88%"></div>
-                        <div class="dash-chart-bar g" style="height:76%"></div>
-                        <div class="dash-chart-bar g" style="height:65%"></div>
-                        <div class="dash-chart-bar g" style="height:70%"></div>
-                        <div class="dash-chart-bar g" style="height:58%"></div>
-                        <div class="dash-chart-bar g" style="height:80%"></div>
-                        <div class="dash-chart-bar g" style="height:92%"></div>
-                        <div class="dash-chart-bar g" style="height:87%"></div>
-                        <div class="dash-chart-bar g" style="height:100%"></div>
-                        <div class="dash-chart-bar g" style="height:75%"></div>
-                    </div>
+                    <div class="dash-chart"><div class="db" style="height:45%"></div><div class="db" style="height:62%"></div><div class="db" style="height:78%"></div><div class="db" style="height:90%"></div><div class="db" style="height:85%"></div><div class="db" style="height:72%"></div><div class="db" style="height:82%"></div><div class="db" style="height:95%"></div><div class="db" style="height:88%"></div><div class="db" style="height:76%"></div><div class="db" style="height:70%"></div><div class="db" style="height:80%"></div><div class="db" style="height:92%"></div><div class="db" style="height:100%"></div><div class="db" style="height:75%"></div></div>
                 </div>
                 <div class="dash-panel">
                     <div class="dash-panel-title">Recent Events</div>
                     <ul class="dash-events">
-                        <li class="dash-event"><span class="dash-event-type pos">POS</span> store_042 — 847 lines <span class="dash-event-time">2s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type prod">PLAN</span> planning_apps_feb — 312 records <span class="dash-event-time">14s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type inv">BOH</span> inventory_042 — 312 items <span class="dash-event-time">28s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type ship">SHIP</span> shipment_DC01 → site_019 <span class="dash-event-time">45s ago</span></li>
-                        <li class="dash-event"><span class="dash-event-type pos">POS</span> store_038 — 1,204 lines <span class="dash-event-time">1m ago</span></li>
+                        <li class="de"><span class="det pos">POS</span> store_042 — 1,204 lines <span class="de-time">2s ago</span></li>
+                        <li class="de"><span class="det prod">PROD</span> product_master — 312 items <span class="de-time">8s ago</span></li>
+                        <li class="de"><span class="det inv">BOH</span> inventory_042 — 847 items <span class="de-time">14s ago</span></li>
+                        <li class="de"><span class="det ship">SHIP</span> shipment_DC01 → site_019 <span class="de-time">28s ago</span></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Controller Dashboard -->
         <div class="dash-preview rv">
             <div class="dash-bar">
-                <div class="dash-bar-l">
-                    <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
-                    <span style="margin-left:0.5rem">conduo controller — controller.conduo.ai</span>
-                </div>
-                <span>All Deployments</span>
+                <div class="dash-bar-l"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span style="margin-left:0.5rem">integrations_controller — :8085</span></div>
+                <span>Deployments · Customers · Licenses</span>
             </div>
             <div style="padding:0.75rem 1.25rem;font-family:var(--mono);font-size:0.68rem">
                 <table style="width:100%;border-collapse:collapse;text-align:left">
-                    <thead>
-                        <tr style="border-bottom:1px solid var(--border)">
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Deployment</th>
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Status</th>
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">License</th>
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Events/sec</th>
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Total Events</th>
-                            <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Last Heartbeat</th>
-                        </tr>
-                    </thead>
+                    <thead><tr style="border-bottom:1px solid var(--border)">
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Deployment</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Customer</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Status</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">License</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Events/sec</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Heartbeat</th>
+                    </tr></thead>
                     <tbody>
-                        <tr style="border-bottom:1px solid var(--border)">
-                            <td style="padding:0.55rem 0.75rem;color:var(--text)">pos-prod</td>
-                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">scale-001</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--em)">2,847</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">14.2M</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">4s ago</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
-                            <td style="padding:0.55rem 0.75rem;color:var(--text)">tmb-planning-prod</td>
-                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">connect-003</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--em)">12</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">8,420</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">18s ago</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
-                            <td style="padding:0.55rem 0.75rem;color:var(--text)">boh-staging</td>
-                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--amber)">● stale</span></td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">scale-001</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">892K</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--amber)">3m ago</td>
-                        </tr>
-                        <tr>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text)">demo-retail-dev</td>
-                            <td style="padding:0.55rem 0.75rem"><span style="color:var(--rose)">● down</span></td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">launch-002</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--text-2)">45K</td>
-                            <td style="padding:0.55rem 0.75rem;color:var(--rose)">12m ago</td>
-                        </tr>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">conduo-customer1</td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">Customer 1</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">connect-001</td><td style="padding:0.55rem 0.75rem;color:var(--em)">12</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">4s ago</td></tr>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">conduo-customer2</td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">Customer 2</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">scale-001</td><td style="padding:0.55rem 0.75rem;color:var(--em)">2,847</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">8s ago</td></tr>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">conduo-customer3</td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">Customer 3</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">connect-002</td><td style="padding:0.55rem 0.75rem;color:var(--em)">4</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">12s ago</td></tr>
+                        <tr><td style="padding:0.55rem 0.75rem;color:var(--text)">conduo-demo</td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">—</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--rose)">● down</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">demo-001</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td><td style="padding:0.55rem 0.75rem;color:var(--rose)">12m ago</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -485,392 +284,387 @@
     </div>
 </section>
 
-<!-- SCHEMAS -->
-<section id="schemas">
-    <div class="wrap tc">
-        <div class="tag rv">Data Types</div>
-        <div class="stitle rv">Pre-built schemas.<br>Or bring your own.</div>
-        <p class="sdesc c rv">Ready-made configs for common data types across retail, construction, and supply chain. Plus define any custom schema via JSON config.</p>
-
-        <div class="schema-grid rv">
-            <div class="schema">
-                <div class="schema-icon">💳</div>
-                <h4>pos_transaction_line</h4>
-                <p>POS line items — sales, returns, discounts, tax, derived totals</p>
-                <span class="schema-tag live">Retail</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">📦</div>
-                <h4>product_master</h4>
-                <p>Product catalogue — SKU, description, category, attributes</p>
-                <span class="schema-tag live">Retail</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🏪</div>
-                <h4>boh_inventory</h4>
-                <p>Back-of-house inventory — stock levels, locations, counts</p>
-                <span class="schema-tag live">Retail</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🏗️</div>
-                <h4>planning_application</h4>
-                <p>Planning submissions — reference, address, status, decisions</p>
-                <span class="schema-tag live">Construction</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🚛</div>
-                <h4>shipment</h4>
-                <p>Shipment data — origin to destination, tracking, line items</p>
-                <span class="schema-tag live">Supply Chain</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🏬</div>
-                <h4>site_master</h4>
-                <p>Site metadata — location, type, region, attributes</p>
-                <span class="schema-tag live">Multi-Industry</span>
-            </div>
-            <div class="schema">
-                <div class="schema-icon">🗂️</div>
-                <h4>product_hierarchy</h4>
-                <p>Category trees — department, class, subclass, family</p>
-                <span class="schema-tag live">Retail</span>
-            </div>
-            <div class="schema" style="border-style:dashed">
-                <div class="schema-icon">⚙️</div>
-                <h4>your_schema</h4>
-                <p>Define any data type — JSON config, your fields, your rules</p>
-                <span class="schema-tag live">Any Industry</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FEATURES -->
+<!-- ═══════════════ FEATURES ═══════════════ -->
 <section id="features">
     <div class="wrap">
         <div class="tag rv">Platform</div>
         <div class="stitle rv">Built for operational data<br>at production scale</div>
-        <p class="sdesc rv">Not another generic ETL. Conduo is purpose-built for the reality of operational data — pipe-delimited files, inconsistent formats, and systems that haven't been updated since 2005.</p>
-
+        <p class="sdesc rv">Rust-powered integration engine. Zero garbage collection. Config-driven. Dual sinks. Fleet monitoring with heartbeats. Everything you need to move data reliably.</p>
         <div class="fgrid">
             <div class="fc rv">
-                <div class="fi e">📂</div>
-                <h3>File Watcher Ingestion</h3>
-                <p>Watches directories for new files. Pipe-delimited, CSV — auto-detected and processed. Drop a file, get events. One-shot or continuous watch mode.</p>
+                <div class="fi rs">🦀</div>
+                <h3>Written in Rust</h3>
+                <p>Zero-copy parsing. No garbage collector. Memory-safe without runtime overhead. Thousands of events per second with sub-millisecond latency. Built by a maintainer of kafka-rust.</p>
             </div>
             <div class="fc rv">
-                <div class="fi c">🔌</div>
-                <h3>REST API Ingestion</h3>
-                <p>POST /api/ingest/{schema_name} for every configured schema. Programmatic ingestion with validation, transformation, and streaming — all in one call.</p>
+                <div class="fi e">📂</div>
+                <h3>File Watcher</h3>
+                <p>Watches directories for pipe-delimited files. Auto-detected and processed against schema configs. Drop a file, get events. One-shot or continuous mode.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi cy">🔌</div>
+                <h3>REST Ingestion API</h3>
+                <p>POST /api/ingest/{schema_name} with API key auth. OpenAPI spec and Swagger UI at :8090. Programmatic ingestion with validation and streaming in one call.</p>
             </div>
             <div class="fc rv">
                 <div class="fi v">⚙️</div>
                 <h3>Config-Driven Schemas</h3>
-                <p>JSON configs in data_config/ define field mappings, types, required fields, and derived calculations. Add a new data type by adding a config file.</p>
+                <p>JSON configs in data_config/ define field mappings, types, required fields, and derived calculations via evalexpr. Add a new data type by adding a config file.</p>
             </div>
             <div class="fc rv">
-                <div class="fi a">⚡</div>
-                <h3>Kafka-Compatible Streaming</h3>
-                <p>Publish to Redpanda, Azure Event Hubs, or any Kafka-protocol broker. Deterministic keys for idempotent delivery. JSONL file output always available.</p>
+                <div class="fi am">⚡</div>
+                <h3>Kafka + JSONL Sinks</h3>
+                <p>Publish to Redpanda or any Kafka-protocol broker on topic conduo_events. JSONL file output always available. Both sinks run simultaneously.</p>
             </div>
             <div class="fc rv">
-                <div class="fi r">🛰️</div>
-                <h3>Remote Monitoring</h3>
-                <p>Integration layers register with the Conduo Controller and send heartbeats every 30 seconds. Track status, license, throughput, and total events — from anywhere.</p>
-            </div>
-            <div class="fc rv">
-                <div class="fi e">🔒</div>
-                <h3>Outbound-Only Security</h3>
-                <p>Integration layers call out to the controller — never the other way round. No inbound connections, no open ports, no firewall changes. Deploy behind any network.</p>
+                <div class="fi ro">🛰️</div>
+                <h3>Fleet Controller</h3>
+                <p>Deployments register on startup and send heartbeats every ~30 seconds. Controller tracks status, licenses, customers. Svelte dashboard with deployment and customer views.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- PRICING -->
+<!-- ═══════════════ AI — COMING SOON ═══════════════ -->
+<section class="ai-section" id="ai">
+    <div class="wrap tc">
+        <div class="tag rv" style="background:linear-gradient(135deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">AI · Coming Soon</div>
+        <div class="stitle rv">Intelligence built into<br>the platform</div>
+        <p class="sdesc cen rv">The .ai in conduo.ai isn't decoration. These features are coming to the controller — making integration smarter, faster, and self-service.</p>
+
+        <div class="ai-grid">
+            <div class="ai-card rv">
+                <h3>🧠 Schema Inference <span class="ai-badge">Coming Soon</span></h3>
+                <p>Drop an unknown file into Conduo. The AI analyses column names, data types, patterns, and relationships — then proposes a working data_config JSON. Accept, edit, deploy. Onboarding in minutes, not days.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">POST /api/ai/infer-schema</span>
+<span style="color:var(--text-4)">← upload: POS_export_20260218.txt</span>
+
+<span style="color:var(--em)">→ proposed config:</span>
+{
+  "schema": "POS_export",
+  "delimiter": "|",
+  "fields": [
+    {"source": "COL_1", "target": "store_id",
+     "type": "string", <span style="color:var(--violet)">← inferred</span>},
+    {"source": "COL_4", "target": "quantity",
+     "type": "integer", <span style="color:var(--violet)">← inferred</span>},
+    {"source": "COL_7", "target": "net_amount",
+     "type": "decimal", <span style="color:var(--violet)">← inferred</span>}
+  ],
+  <span style="color:var(--violet)">confidence: 87%</span>
+}
+                </div>
+            </div>
+
+            <div class="ai-card rv">
+                <h3>📊 Anomaly Detection <span class="ai-badge">Coming Soon</span></h3>
+                <p>Goes beyond basic validation. Learns normal patterns per schema — transaction volumes, price ranges, timing. Flags when Store 42 reports zero sales on a Tuesday or a product price is 100x normal.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">anomaly detected:</span>
+  schema: POS
+  tenant: customer
+  field:  net_amount
+  value:  £42,500.00
+  <span style="color:var(--amber)">expected range: £0.50 – £850.00</span>
+  <span style="color:var(--rose)">⚠ 50x above p99 for this store</span>
+
+<span style="color:var(--violet)">anomaly detected:</span>
+  schema: boh_inventory
+  tenant: impulse-logic
+  store:  store_042
+  <span style="color:var(--rose)">⚠ zero transactions since 09:00</span>
+  <span style="color:var(--amber)">normal: 120-180 txns/hr for Tuesday</span>
+                </div>
+            </div>
+
+            <div class="ai-card rv">
+                <h3>💬 Natural Language Config <span class="ai-badge">Later</span></h3>
+                <p>Describe your pipeline in plain English. Conduo generates the schema configs, field mappings, derived calculations, and output routing. No JSON editing required.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">→ "I have daily CSV files from our ERP
+   with sales transactions. Columns are
+   store code, date, product SKU, quantity
+   sold, and net amount. I need gross
+   calculated at 20% VAT. Stream to Kafka."</span>
+
+<span style="color:var(--em)">← generating data_config/erp_sales.json...</span>
+<span style="color:var(--em)">← derived field: gross = net_amount * 1.2</span>
+<span style="color:var(--em)">← sink: kafka://conduo_events</span>
+<span style="color:var(--em)">← sink: /output/erp_sales_{date}.jsonl</span>
+<span style="color:var(--text-4)">Ready. Drop a file to test.</span>
+                </div>
+            </div>
+
+            <div class="ai-card rv">
+                <h3>🔗 Cross-Source Correlation <span class="ai-badge">Later</span></h3>
+                <p>Match events across data sources in real-time. Link a SAP sales order with a Dynamics shipment and a POS transaction into a unified order lifecycle. Different systems, different IDs — one event.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">correlated event:</span>
+  order_id: ORD-2847
+  <span style="color:var(--cyan)">sap:</span>   sales_order 4500012847 <span style="color:var(--text-4)">→ created</span>
+  <span style="color:var(--violet)">d365:</span>  shipment SHP-00291    <span style="color:var(--text-4)">→ dispatched</span>
+  <span style="color:var(--amber)">pos:</span>   txn 042-1847-20260218 <span style="color:var(--text-4)">→ collected</span>
+  <span style="color:var(--em)">status: fulfilled</span>
+  <span style="color:var(--text-4)">latency: order → collection: 2d 4h</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ SCHEMAS ═══════════════ -->
+<section id="schemas">
+    <div class="wrap tc">
+        <div class="tag rv">Data Types</div>
+        <div class="stitle rv">Pre-built schemas.<br>Or bring your own.</div>
+        <p class="sdesc cen rv">Ready-made configs in data_config/ for common data types. Define any custom schema via JSON config with derived fields and validation rules.</p>
+        <div class="schema-grid rv">
+            <div class="schema"><div class="schema-icon">💳</div><h4>POS</h4><p>Transaction lines — sales, returns, discounts, tax, derived totals</p><span class="stag live">Retail</span></div>
+            <div class="schema"><div class="schema-icon">📦</div><h4>product_master</h4><p>Product catalogue — SKU, description, category, attributes</p><span class="stag live">Retail</span></div>
+            <div class="schema"><div class="schema-icon">🏪</div><h4>boh_inventory</h4><p>Back-of-house inventory — stock levels, locations, counts</p><span class="stag live">Retail</span></div>
+            <div class="schema"><div class="schema-icon">🚛</div><h4>shipment</h4><p>Shipment data — origin to destination, tracking, items</p><span class="stag live">Supply Chain</span></div>
+            <div class="schema"><div class="schema-icon">🏬</div><h4>store_master</h4><p>Store metadata — location, type, region, attributes</p><span class="stag live">Retail</span></div>
+            <div class="schema"><div class="schema-icon">🗂️</div><h4>product_hierarchy</h4><p>Category trees — department, class, subclass, family</p><span class="stag live">Retail</span></div>
+            <div class="schema"><div class="schema-icon">👤</div><h4>user_associate</h4><p>Staff records — roles, assignments, permissions</p><span class="stag live">Multi-Industry</span></div>
+            <div class="schema" style="border-style:dashed"><div class="schema-icon">⚙️</div><h4>your_schema</h4><p>Any data type — your fields, your rules, evalexpr derived fields</p><span class="stag live">Any Industry</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ OPEN SOURCE ═══════════════ -->
+<section class="oss-section" id="open-source">
+    <div class="wrap tc">
+        <div class="tag rv">Open Source</div>
+        <div class="stitle rv">Open engine.<br>Proprietary management.</div>
+        <p class="sdesc cen rv">The integration layer is free and open source. The controller, AI features, and fleet management are a paid subscription.</p>
+        <div class="oss-grid">
+            <div class="oss-box rv">
+                <span class="oss-label open">Open Source · Apache 2.0</span>
+                <p style="font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem">Runs on customer infrastructure · github.com/conduo-ai</p>
+                <ul>
+                    <li><span style="color:var(--em)">✓</span> Integration layer (Rust binary)</li>
+                    <li><span style="color:var(--em)">✓</span> Config parser &amp; schema validation</li>
+                    <li><span style="color:var(--em)">✓</span> File watcher (pipe-delimited)</li>
+                    <li><span style="color:var(--em)">✓</span> REST ingestion API + API key auth</li>
+                    <li><span style="color:var(--em)">✓</span> Kafka producer + JSONL sink</li>
+                    <li><span style="color:var(--em)">✓</span> Derived fields via evalexpr</li>
+                    <li><span style="color:var(--em)">✓</span> Metrics API + Swagger UI</li>
+                    <li><span style="color:var(--em)">✓</span> Controller registration + heartbeat client</li>
+                    <li><span style="color:var(--em)">✓</span> Self-healing recovery &amp; checkpoints</li>
+                    <li><span style="color:var(--em)">✓</span> Kafka consumers (Rust + Go)</li>
+                    <li><span style="color:var(--em)">✓</span> api_poster_rs client tool</li>
+                    <li><span style="color:var(--em)">✓</span> Local Svelte dashboard</li>
+                    <li><span style="color:var(--em)">✓</span> Docker Compose stack + scripts</li>
+                </ul>
+            </div>
+            <div class="oss-box rv" style="border-color:rgba(255,79,109,0.2)">
+                <span class="oss-label closed">Proprietary · SaaS</span>
+                <p style="font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem">Runs on Conduo cloud · controller.conduo.ai</p>
+                <ul>
+                    <li><span style="color:var(--rose)">⦿</span> Integrations controller (Rust)</li>
+                    <li><span style="color:var(--rose)">⦿</span> Fleet dashboard (Svelte)</li>
+                    <li><span style="color:var(--rose)">⦿</span> Deployment registration + heartbeats</li>
+                    <li><span style="color:var(--rose)">⦿</span> Customer signup + provisioning</li>
+                    <li><span style="color:var(--rose)">⦿</span> License validation + enforcement</li>
+                    <li><span style="color:var(--rose)">⦿</span> Alerting + notifications</li>
+                    <li><span style="color:var(--rose)">⦿</span> AI schema inference</li>
+                    <li><span style="color:var(--rose)">⦿</span> AI anomaly detection</li>
+                    <li><span style="color:var(--rose)">⦿</span> AI natural language config</li>
+                    <li><span style="color:var(--rose)">⦿</span> Cross-source event correlation</li>
+                    <li><span style="color:var(--rose)">⦿</span> ERP-aware transform packs</li>
+                    <li><span style="color:var(--rose)">⦿</span> Managed deployment + support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
 <section id="pricing">
     <div class="wrap tc">
-        <div class="tag rv">Pricing Coming Soon</div>
-        <div class="stitle rv">Start simple. Scale when ready.</div>
-        <p class="sdesc c rv">From a single scheduled data feed to enterprise-wide real-time streaming. No hidden fees.</p>
-
+        <div class="tag rv">Pricing</div>
+        <div class="stitle rv">Free to start. Scale when ready.</div>
+        <p class="sdesc cen rv">The open source engine is free forever. Pay for the controller, fleet monitoring, AI features, and managed support when you need it.</p>
         <div class="pgrid">
+            <div class="pc rv">
+                <div class="pc-tier">Community</div>
+                <div class="pc-name">Open Source</div>
+                <p class="pc-desc">Full integration layer. Run it yourself. No limits, no licence key.</p>
+                <ul class="pc-list">
+                    <li>Rust integration engine</li>
+                    <li>All data sources + sinks</li>
+                    <li>Unlimited schemas</li>
+                    <li>Unlimited events</li>
+                    <li>Local dashboard</li>
+                    <li>Community support (GitHub)</li>
+                </ul>
+                <a href="https://github.com/conduo-ai" class="btn btn-o pc-cta">★ Clone on GitHub</a>
+            </div>
             <div class="pc rv">
                 <div class="pc-tier">Starter</div>
                 <div class="pc-name">Connect</div>
-                <p class="pc-desc">One schema, one pipeline. File watch or API ingestion for a single data feed.</p>
-                <!--<div class="pc-amt"><span class="cur">£</span><span class="val">500</span></div>
-                <div class="pc-per">per month</div>-->
+                <p class="pc-desc">Controller access for a single deployment. We host it — you configure it.</p>
                 <ul class="pc-list">
-                    <li>1 schema config</li>
-                    <li>File watch or REST API</li>
-                    <li>5,000 events/day</li>
-                    <li>JSONL output</li>
-                    <li>Basic dashboard</li>
+                    <li>Everything in Open Source</li>
+                    <li>Controller registration</li>
+                    <li>Fleet dashboard access</li>
+                    <li>Heartbeat monitoring</li>
+                    <li>Customer profile</li>
                     <li>Email support</li>
                 </ul>
-                <div class="pc-div"></div>
-                <div class="pc-slbl">Setup</div>
-                <ul class="pc-list">
-                    <li>Self-service onboarding</li>
-                    <li>No setup fee</li>
-                </ul>
                 <a href="#contact" class="btn btn-o pc-cta">Get Started</a>
             </div>
-
-            <div class="pc rv">
-                <div class="pc-tier">Growth</div>
-                <div class="pc-name">Launch</div>
-                <p class="pc-desc">Multi-schema ingestion with Kafka streaming for growing operations.</p>
-                <!--<div class="pc-amt"><span class="cur">£</span><span class="val">2,500</span></div>
-                <div class="pc-per">per month · billed annually</div>-->
-                <ul class="pc-list">
-                    <li>Up to 3 schema configs</li>
-                    <li>File watch + REST API</li>
-                    <li>50,000 events/day</li>
-                    <li>JSONL + Kafka output</li>
-                    <li>Full dashboard + metrics</li>
-                    <li>Next-day support</li>
-                    <li>99.5% uptime SLA</li>
-                </ul>
-                <div class="pc-div"></div>
-                <div class="pc-slbl">Setup</div>
-                <ul class="pc-list">
-                    <li>£15,000 onboarding</li>
-                    <li>2 schema configs built</li>
-                </ul>
-                <a href="#contact" class="btn btn-o pc-cta">Get Started</a>
-            </div>
-
             <div class="pc hl rv">
                 <div class="pc-tier">Professional</div>
                 <div class="pc-name">Scale</div>
-                <p class="pc-desc">Full data pipeline with all schemas, Event Hubs, and priority support.</p>
-                <!--<div class="pc-amt"><span class="cur">£</span><span class="val">5,000</span></div>
-                <div class="pc-per">per month · billed annually</div>-->
+                <p class="pc-desc">Multi-deployment fleet with ERP connectors, AI, and priority support.</p>
                 <ul class="pc-list">
-                    <li>Unlimited schema configs</li>
-                    <li>All ingestion modes</li>
-                    <li>500,000 events/day</li>
-                    <li>Kafka + Azure Event Hubs</li>
-                    <li>Kafka consumer included</li>
-                    <li>Custom derived fields</li>
+                    <li>Everything in Connect</li>
+                    <li>Unlimited deployments</li>
+                    <li>SAP OData + Dynamics pollers</li>
+                    <li>AI schema inference</li>
+                    <li>Anomaly detection</li>
+                    <li>ERP-aware transform packs</li>
+                    <li>Alerting + notifications</li>
                     <li>4hr priority support</li>
-                    <li>99.9% uptime SLA</li>
-                </ul>
-                <div class="pc-div"></div>
-                <div class="pc-slbl">Setup</div>
-                <ul class="pc-list">
-                    <li>£25,000 onboarding</li>
-                    <li>All schemas configured</li>
-                    <li>Dedicated engineer</li>
                 </ul>
                 <a href="#contact" class="btn btn-e pc-cta">Book a Demo</a>
             </div>
-
             <div class="pc rv">
                 <div class="pc-tier">Enterprise</div>
                 <div class="pc-name">Transform</div>
-                <p class="pc-desc">Unlimited scale, private deployment, custom schemas, and dedicated support.</p>
-                <!--<div class="pc-amt"><span class="val" style="font-size:2rem">Custom</span></div>
-                <div class="pc-per">tailored to your infrastructure</div>-->
+                <p class="pc-desc">Dedicated controller, all AI, custom SLA, architecture advisory.</p>
                 <ul class="pc-list">
-                    <li>Unlimited everything</li>
-                    <li>On-prem / private cloud</li>
-                    <li>Custom SLA to 99.99%</li>
-                    <li>Dedicated support team</li>
-                    <li>Custom schema development</li>
-                    <li>Multi-tenant deployment</li>
-                    <li>SSO &amp; advanced security</li>
-                </ul>
-                <div class="pc-div"></div>
-                <div class="pc-slbl">Engagement</div>
-                <ul class="pc-list">
-                    <li>Architecture workshop</li>
-                    <li>CTO advisory available</li>
-                    <li>Phased rollout</li>
+                    <li>Everything in Scale</li>
+                    <li>Private controller instance</li>
+                    <li>Natural language config</li>
+                    <li>Cross-source correlation</li>
+                    <li>Visual configurator</li>
+                    <li>Custom SLA</li>
+                    <li>Dedicated support</li>
+                    <li>CTO advisory</li>
                 </ul>
                 <a href="#contact" class="btn btn-o pc-cta">Contact Sales</a>
             </div>
         </div>
-
-        <div class="rv" style="margin-top:3.5rem">
-            <div class="stitle" style="font-size:1.35rem;margin-bottom:0.25rem">Add-Ons</div>
-            <div class="ao-grid">
-                <div class="ao">
-                    <h4>Extra Schemas</h4>
-                    <div class="ao-pr">£500/mo each</div>
-                    <p>Additional schema configs beyond your plan. Custom builds on request.</p>
-                </div>
-                <div class="ao">
-                    <h4>Pro Services</h4>
-                    <div class="ao-pr">£1,200/day</div>
-                    <p>Custom schema development, data migration, and architecture consulting.</p>
-                </div>
-                <div class="ao">
-                    <h4>Managed Ops</h4>
-                    <div class="ao-pr">From £1,500/mo</div>
-                    <p>We monitor and optimise your pipelines. 24/7 incident response.</p>
-                </div>
-                <div class="ao">
-                    <h4>Training</h4>
-                    <div class="ao-pr">£3,000/session</div>
-                    <p>Half-day workshop for your team on config management and data ops.</p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
-<!-- USE CASES -->
+<!-- ═══════════════ USE CASES ═══════════════ -->
 <section id="use-cases">
     <div class="wrap">
         <div class="tag rv">Use Cases</div>
-        <div class="stitle rv">Proven in production</div>
-        <p class="sdesc rv">From weekly file drops to real-time streaming — Conduo handles operational data at every scale.</p>
-
+        <div class="stitle rv">Built for the real world</div>
+        <p class="sdesc rv">From weekly file drops to real-time streaming at thousands of events per second.</p>
         <div class="ucgrid">
             <div class="uc rv">
                 <div class="uc-tag">Retail</div>
-                <h3>POS Data Pipeline — Multiple Stores</h3>
-                <p>Caribbean retail group streaming POS transaction lines from pipe-delimited files into Kafka for real-time inventory sync. Replaced nightly batch with file watcher + event streaming.</p>
-                <div class="uc-met">
-                    <strong>12hrs → Real-time</strong>
-                    <span>data latency eliminated</span>
-                </div>
+                <h3>POS Data Pipeline — 60+ Stores</h3>
+                <p>Pipe-delimited POS files from store servers streamed into Kafka for real-time inventory sync. File watcher ingestion with schema validation and derived fields.</p>
+                <div class="uc-met"><strong>62,319</strong><span>events/sec · Rust engine</span></div>
             </div>
             <div class="uc rv">
-                <div class="uc-tag">Construction</div>
-                <h3>Planning Application Data Feed</h3>
-                <p>Construction marketplace receiving planning application data via weekly file drop. Auto-parsed against schema config, validated, and delivered as JSONL into the platform database.</p>
-                <div class="uc-met">
-                    <strong>£500/mo</strong>
-                    <span>vs £2k/mo custom dev</span>
-                </div>
+                <div class="uc-tag">ERP Integration</div>
+                <h3>Bespoke ERP — API or File Drop</h3>
+                <p>Connect any ERP via REST API or file export. Custom schema config maps their data model to normalised events. One deployment, one config file, streaming in an hour.</p>
+                <div class="uc-met"><strong>1 hour</strong><span>from config to streaming</span></div>
             </div>
             <div class="uc rv">
-                <div class="uc-tag">Platform Integration</div>
-                <h3>Master Data Sync via REST API</h3>
-                <p>Product and site master data ingested via REST endpoints. Validated, enriched with metadata, and published to Event Hubs for downstream microservices consumption.</p>
-                <div class="uc-met">
-                    <strong>2,847</strong>
-                    <span>events/sec throughput</span>
-                </div>
+                <div class="uc-tag">Self-Service</div>
+                <h3>Sign Up &amp; Stream</h3>
+                <p>Sign up on conduo.ai, create your schema configs, point your data at your ingestion URL. Events streaming to Kafka in minutes. No deployment call, no onboarding meeting.</p>
+                <div class="uc-met"><strong>15 min</strong><span>signup to streaming</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">Edge</div>
+                <h3>Deploy Anywhere</h3>
+                <p>Single Rust binary or Docker container. Runs on a VPS, a rack server, a Raspberry Pi. Outbound-only heartbeats — no firewall changes, no open ports.</p>
+                <div class="uc-met"><strong>&lt;10MB</strong><span>binary footprint</span></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FAQ -->
+<!-- ═══════════════ FAQ ═══════════════ -->
 <section>
     <div class="wrap">
         <div class="tag rv">FAQ</div>
         <div class="stitle rv">Common questions</div>
         <p class="sdesc rv" style="margin-bottom:2.5rem">Everything you need to know about getting started.</p>
         <div class="faq-grid">
-            <div class="faq rv">
-                <h4>What file formats are supported?</h4>
-                <p>Pipe-delimited and CSV files. The file watcher monitors a directory and auto-processes new files as they arrive. Each file is parsed against its schema config for field mapping and validation.</p>
-            </div>
-            <div class="faq rv">
-                <h4>What streaming brokers are supported?</h4>
-                <p>Any Kafka-protocol compatible broker — Redpanda for local/dev, Azure Event Hubs for production, plus the Event Hubs Emulator for testing. JSONL file output is always available as well.</p>
-            </div>
-            <div class="faq rv">
-                <h4>Can I define custom data types?</h4>
-                <p>Yes. Every schema is a JSON config — field mappings, types, required flags, and derived field formulas. Create a new config file and Conduo handles the rest.</p>
-            </div>
-            <div class="faq rv">
-                <h4>How does the dashboard work?</h4>
-                <p>Svelte-powered real-time UI showing throughput (events/sec), time-series charts, and recent events by type with filter and expand. Full Metrics API and Swagger UI included.</p>
-            </div>
-            <div class="faq rv">
-                <h4>How long does setup take?</h4>
-                <p>Connect tier with one schema is live in hours — define your config, point at a directory or API, and start streaming. Multi-schema deployments with Kafka typically take 4–6 weeks.</p>
-            </div>
-            <div class="faq rv">
-                <h4>Who's behind Conduo?</h4>
-                <p>Built by Resolutis, a specialist consultancy with 25+ years in enterprise integration, embedded systems, and operational technology. Background includes Apple, Google, JLR, and NXP.</p>
-            </div>
+            <div class="faq rv"><h4>What data sources are supported?</h4><p>File watcher for pipe-delimited files and REST API with API key auth for programmatic ingestion — both live today. SAP OData and Dynamics 365 pollers are on the roadmap for the Scale tier.</p></div>
+            <div class="faq rv"><h4>Is it really open source?</h4><p>Yes. The entire integration layer — Rust engine, file watcher, REST API, Kafka producer, JSONL sink, schemas, local dashboard, consumer tools — is Apache 2.0 on GitHub. No feature gating.</p></div>
+            <div class="faq rv"><h4>Why Rust?</h4><p>Zero garbage collection means predictable latency. Memory safety without runtime overhead. A single static binary with no dependencies. Built by a maintainer of kafka-rust for production reliability.</p></div>
+            <div class="faq rv"><h4>Can I self-host everything?</h4><p>The open source engine runs anywhere — your server, your cloud, your Docker host. The controller is a paid SaaS service. You can run the engine without the controller, you just won't have fleet monitoring or AI features.</p></div>
+            <div class="faq rv"><h4>How does the AI work?</h4><p>AI features run in the controller, not the local engine. Schema inference analyses uploaded files server-side. Anomaly detection learns from event patterns across your tenant. All AI features are coming soon — join the waitlist.</p></div>
+            <div class="faq rv"><h4>Who's behind Conduo?</h4><p>Built by Resolutis — 25+ years in enterprise integration, embedded systems, and Linux kernel development. Background includes Apple, Google, JLR, and NXP. Maintainer of kafka-rust.</p></div>
         </div>
     </div>
 </section>
 
-<!-- ROADMAP -->
+<!-- ═══════════════ ROADMAP ═══════════════ -->
 <section>
     <div class="wrap tc">
-        <div class="tag rv">Coming Soon</div>
-        <div class="stitle rv">AI-powered API configuration</div>
-        <p class="sdesc c rv">Describe your data in plain language. Conduo's AI generates the schema config, field mappings, validation rules, and REST API endpoints automatically.</p>
-
-        <div class="how-grid" style="max-width:780px;margin:0 auto;grid-template-columns:1fr 1fr">
+        <div class="tag rv">Roadmap</div>
+        <div class="stitle rv">What's coming next</div>
+        <p class="sdesc cen rv">The integration layer and controller are live. Here's what's being built.</p>
+        <div class="how-grid" style="max-width:900px;margin:0 auto">
             <div class="how-card rv" style="text-align:left">
-                <h3 style="margin-top:0">Today — Config-Driven</h3>
-                <p>You write JSON configs manually. Define field mappings, types, derived fields, and validation rules. Full control, full flexibility.</p>
-                <code>{
-  "schema": "planning_application",
-  "fields": [
-    {"source": "REF", "target": "ref"},
-    {"source": "STATUS", "target": "status"}
-  ]
-}</code>
+                <h3 style="margin-top:0">Now</h3>
+                <p><strong style="color:var(--em)">Tenant provisioning</strong> — sign up → auto-provision → API key → streaming.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--em)">Self-healing recovery</strong> — checkpoints, file tracking, resume without duplicates.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--em)">Customer ↔ deployment link</strong> — unified view in the controller dashboard.</p>
             </div>
-            <div class="how-card rv" style="text-align:left;border-color:var(--border-2);border-style:dashed">
-                <h3 style="margin-top:0">Tomorrow — AI-Configured</h3>
-                <p>Describe what you need. AI generates the config, creates the REST endpoint, suggests validation rules, and maps fields intelligently.</p>
-                <code style="color:var(--cyan)"><span style="color:var(--amber)">prompt:</span> "I need to ingest weekly
-planning application CSVs with
-reference, address, status, and
-decision date. Stream to Kafka."
-
-<span style="color:var(--em)">→ schema config generated</span>
-<span style="color:var(--em)">→ REST endpoint created</span>
-<span style="color:var(--em)">→ validation rules suggested</span>
-<span style="color:var(--em)">→ pipeline ready</span></code>
+            <div class="how-card rv" style="text-align:left">
+                <h3 style="margin-top:0">Next</h3>
+                <p><strong style="color:var(--cyan)">ERP-aware transforms</strong> — currency decimals, code lookups, hierarchy flattening, date normalisation.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--cyan)">AI schema inference</strong> — drop an unknown file, get a proposed config.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--cyan)">SAP OData + Dynamics pollers</strong> — adaptive delta sync across ERP versions.</p>
+            </div>
+            <div class="how-card rv" style="text-align:left">
+                <h3 style="margin-top:0">Later</h3>
+                <p><strong style="color:var(--violet)">Anomaly detection</strong> — learn patterns, flag outliers at ingestion time.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--violet)">Natural language config</strong> — describe a pipeline in English → working configs.</p>
+                <p style="margin-top:0.5rem"><strong style="color:var(--violet)">Cross-source correlation</strong> — match events across SAP, Dynamics, and POS.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA -->
+<!-- ═══════════════ CTA ═══════════════ -->
 <section id="contact" class="cta">
-    <p style="font-size:0.82rem;color:var(--text-3);font-style:italic;margin-bottom:0.5rem" class="rv">Conduo — Latin: "to bring together." From <em>con-</em> (together) + <em>dūcō</em> (to lead).</p>
+    <p style="font-size:0.82rem;color:var(--text-3);font-style:italic;margin-bottom:0.5rem" class="rv">Conduo — Latin: "to bring together." Pronounced <strong>con-DOO-oh</strong>.</p>
     <div class="stitle rv">Ready to bring your<br>data <em style="font-family:var(--display);background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">together?</em></div>
-    <p class="rv">30-minute demo. We'll run your data through Conduo live and show you events streaming in real-time.</p>
+    <p class="rv">Clone the repo and start streaming in 15 minutes.<br>Or book a demo and we'll run your data through Conduo live.</p>
     <div class="hero-actions rv">
-        <a href="https://resolutis.com/contact/" class="btn btn-e btn-lg">Book a Demo →</a>
-        <a href="https://resolutis.com/contact/" class="btn btn-o btn-lg email-ob">Contact →</a>
+        <a href="https://github.com/conduo-ai" class="btn btn-e btn-lg">★ Star on GitHub</a>
+        <a href="#" class="btn btn-o btn-lg" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false">Book a Demo →</a>
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer class="foot">
     <div class="foot-l">
         <div class="fb">conduo.ai</div>
-        <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem">
-            <a href="https://resolutis.com"><img src="resolutis-logo-inverted_grey.png" alt="Resolutis" style="height:24px"></a>
-            <p style="font-size:0.75rem;color:var(--text-4)">Conduo by Resolutis</p>
-        </div>
-        <p style="font-size:0.68rem;color:var(--text-4);margin-top:0.3rem">© 2026 Resolutis Ltd. All rights reserved.</p>
+        <p>Conduo by Resolutis · © 2026 Resolutis Ltd</p>
+        <p style="font-size:0.68rem;margin-top:0.15rem">Engine: Apache 2.0 · Controller: Commercial</p>
     </div>
     <div class="foot-r">
+        <a href="https://github.com/conduo-ai">GitHub</a>
         <a href="#features">Features</a>
-        <a href="#schemas">Data Types</a>
+        <a href="#ai">AI</a>
+        <a href="#open-source">Open Source</a>
         <a href="#pricing">Pricing</a>
         <a href="https://resolutis.com">Resolutis</a>
-        <a href="mailto:hello@conduo.ai">Contact</a>
+        <a href="#" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false">Contact</a>
     </div>
 </footer>
 
 <script>
 const rv=document.querySelectorAll('.rv');
-const obs=new IntersectionObserver(e=>{
-    e.forEach((en,i)=>{
-        if(en.isIntersecting){setTimeout(()=>en.target.classList.add('vis'),i*60);obs.unobserve(en.target)}
-    });
-},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+const obs=new IntersectionObserver(e=>{e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>en.target.classList.add('vis'),i*60);obs.unobserve(en.target)}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
 rv.forEach(el=>obs.observe(el));
 </script>
-
 </body>
 </html>
