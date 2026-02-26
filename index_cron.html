@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduo — Replace your cron job. Ingest files. Stream events.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#07080a;--bg-2:#0d0f13;--bg-3:#13161c;--bg-4:#191d25;--border:#1e2330;--border-2:#2a3040;--text:#edf0f7;--text-2:#9aa2b8;--text-3:#6b7490;--text-4:#464f66;--em:#00d4aa;--em2:#00f0c0;--em-dim:rgba(0,212,170,0.08);--cyan:#00b4d8;--cyan-dim:rgba(0,180,216,0.08);--violet:#7c5cfc;--violet-dim:rgba(124,92,252,0.08);--amber:#ffb020;--amber-dim:rgba(255,176,32,0.08);--rose:#ff4f6d;--rose-dim:rgba(255,79,109,0.08);--rust:#f74c00;--rust-dim:rgba(247,76,0,0.10);--display:'Playfair Display',Georgia,serif;--sans:'Manrope',-apple-system,sans-serif;--mono:'SF Mono','Cascadia Code','Fira Code',Consolas,monospace;--r:16px}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}
+        .nav{position:fixed;top:0;width:100%;z-index:100;padding:0.9rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px) saturate(1.3);background:rgba(7,8,10,0.8);border-bottom:1px solid var(--border)}.nav-brand{display:flex;align-items:center;gap:0.5rem}.nav-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--em),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.75rem;color:var(--bg)}.nav-name{font-weight:800;font-size:1.15rem;letter-spacing:-0.04em}.nav-name .ai{color:var(--em);font-weight:600;font-size:0.8rem;margin-left:0.15rem;vertical-align:super}.nav-links{display:flex;align-items:center;gap:1.75rem}.nav-links a{font-size:0.82rem;font-weight:500;color:var(--text-2);transition:color 0.2s}.nav-links a:hover{color:var(--text)}
+        .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.65rem 1.5rem;border-radius:10px;font-family:var(--sans);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;transition:all 0.25s ease}.btn-e{background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg)}.btn-e:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,170,0.25)}.btn-o{background:var(--bg-3);color:var(--text);border:1px solid var(--border)}.btn-o:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-2px)}.btn-lg{padding:0.9rem 2.2rem;font-size:0.92rem;border-radius:12px}.btn-sm{padding:0.5rem 1.15rem;font-size:0.8rem}
+
+        .hero{padding:11rem 2rem 5rem;text-align:center;position:relative;overflow:hidden}.hero::before{content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 40% 40%,rgba(0,212,170,0.06) 0%,transparent 50%),radial-gradient(ellipse at 60% 60%,rgba(247,76,0,0.04) 0%,transparent 50%);pointer-events:none}.hero-chip{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 1rem 0.35rem 0.55rem;border:1px solid var(--border);border-radius:100px;background:var(--bg-2);font-size:0.76rem;font-weight:600;color:var(--text-2);margin-bottom:2.5rem;animation:up .6s ease}.hero-chip .dot{width:7px;height:7px;background:var(--rust);border-radius:50%;animation:pulse 2s infinite}.hero h1{font-family:var(--display);font-size:clamp(3rem,7vw,5.2rem);font-weight:400;line-height:1.06;letter-spacing:-0.02em;max-width:820px;margin:0 auto 1.5rem;animation:up .6s ease .05s both}.hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.12rem;color:var(--text-2);max-width:640px;margin:0 auto 2.5rem;font-weight:400;line-height:1.65;animation:up .6s ease .1s both}.hero-actions{display:flex;justify-content:center;gap:0.75rem;animation:up .6s ease .15s both;flex-wrap:wrap}.hero-tech{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;animation:up .6s ease .2s both;flex-wrap:wrap}.hero-tech span{font-size:0.72rem;color:var(--text-4);font-weight:600;display:flex;align-items:center;gap:0.35rem}.hero-tech span::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--text-4)}.hero-tech span.rs{color:var(--rust)}.hero-tech span.rs::before{background:var(--rust)}
+
+        .problem{padding:4rem 2rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2)}.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:900px;margin:0 auto;align-items:center}.problem-left h2{font-family:var(--display);font-size:1.8rem;font-weight:400;line-height:1.2;margin-bottom:1rem}.problem-left h2 span{color:var(--rose)}.problem-left p{font-size:0.92rem;color:var(--text-2);line-height:1.65}.problem-right{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;font-family:var(--mono);font-size:0.68rem;line-height:1.8;color:var(--text-3)}.problem-right .bad{color:var(--rose)}.problem-right .cmt{color:var(--text-4)}
+
+        .rust-banner{background:var(--bg-2);border:1px solid rgba(247,76,0,0.2);border-radius:12px;padding:1.25rem 1.75rem;max-width:680px;margin:3rem auto 0;display:flex;align-items:center;gap:1.25rem;animation:up .8s ease .3s both}.rust-banner h3{font-size:0.92rem;font-weight:700;margin-bottom:0.2rem}.rust-banner h3 span{color:var(--rust)}.rust-banner p{font-size:0.78rem;color:var(--text-2);line-height:1.5}.rust-logo{width:42px;height:42px;flex-shrink:0;border-radius:10px;background:var(--rust-dim);display:grid;place-items:center;font-size:1.3rem}
+
+        .terminal{max-width:780px;margin:3rem auto 0;animation:up .8s ease .25s both}.tw{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.4)}.tb{display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border)}.td{width:10px;height:10px;border-radius:50%}.td.r{background:#ff5f57}.td.y{background:#ffbd2e}.td.g{background:#28ca41}.tb span{font-size:0.68rem;color:var(--text-4);margin-left:0.5rem;font-weight:500;font-family:var(--mono)}.tc_{padding:1.25rem 1.5rem;font-family:var(--mono);font-size:0.72rem;line-height:1.8;color:var(--text-2);overflow-x:auto}.tc_ .p{color:var(--em)}.tc_ .d{color:var(--text-4)}.tc_ .h{color:var(--em2)}.tc_ .c{color:var(--cyan)}.tc_ .a{color:var(--amber)}.tc_ .ro{color:var(--rose)}.tc_ .rs{color:var(--rust)}
+
+        .ba-section{max-width:900px;margin:0 auto}.ba-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:start}.ba-card{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem}.ba-card h3{font-size:0.95rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem}.ba-card ul{list-style:none}.ba-card ul li{font-size:0.82rem;color:var(--text-2);padding:0.35rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5}.ba-arrow{display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--text-4);padding-top:3rem}.ba-card.before{border-color:rgba(255,79,109,0.15)}.ba-card.after{border-color:rgba(0,212,170,0.2)}
+
+        .wrap{max-width:1140px;margin:0 auto;padding:0 2rem}section{padding:7rem 0}.tag{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;font-weight:700;margin-bottom:0.75rem;background:linear-gradient(135deg,var(--em),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stitle{font-family:var(--display);font-size:clamp(2.2rem,4vw,3.2rem);font-weight:400;line-height:1.12;letter-spacing:-0.02em;margin-bottom:0.75rem}.sdesc{font-size:1.02rem;color:var(--text-2);max-width:560px;margin-bottom:3.5rem;line-height:1.65}.sdesc.cen{margin-left:auto;margin-right:auto}.tc{text-align:center}
+
+        .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}.how-card{position:relative;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem 1.75rem;transition:all 0.3s}.how-card:hover{border-color:var(--border-2);transform:translateY(-4px)}.how-num{position:absolute;top:-14px;left:1.75rem;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:0.7rem;font-weight:800;color:var(--bg)}.how-num.n1{background:var(--em)}.how-num.n2{background:var(--cyan)}.how-num.n3{background:var(--violet)}.how-card h3{font-size:1rem;font-weight:700;margin:0.75rem 0 0.5rem}.how-card p{font-size:0.86rem;color:var(--text-2);line-height:1.55}.how-card code{display:block;margin-top:1rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:0.65rem;color:var(--em);font-family:var(--mono);line-height:1.7;white-space:pre;overflow-x:auto}
+
+        .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.fc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;transition:all 0.3s}.fc:hover{background:var(--bg-4);border-color:var(--border-2);transform:translateY(-3px)}.fi{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:1.2rem;margin-bottom:1.1rem}.fi.e{background:var(--em-dim)}.fi.cy{background:var(--cyan-dim)}.fi.v{background:var(--violet-dim)}.fi.am{background:var(--amber-dim)}.fi.ro{background:var(--rose-dim)}.fi.rs{background:var(--rust-dim)}.fc h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem}.fc p{color:var(--text-2);font-size:0.85rem;line-height:1.55}
+
+        .ucgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}.uc{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:2rem;transition:all 0.3s}.uc:hover{border-color:var(--border-2);transform:translateY(-2px)}.uc-tag{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--amber);margin-bottom:0.6rem}.uc h3{font-size:1rem;font-weight:700;margin-bottom:0.45rem}.uc p{font-size:0.84rem;color:var(--text-2);line-height:1.55}.uc-met{margin-top:1.1rem;display:flex;align-items:baseline;gap:0.5rem}.uc-met strong{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.uc-met span{font-size:0.75rem;color:var(--text-4)}
+
+        .ai-section{background:linear-gradient(180deg,var(--bg-2),var(--bg));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;max-width:900px;margin:0 auto}.ai-card{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;position:relative;overflow:hidden}.ai-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at top right,rgba(124,92,252,0.06),transparent 70%);pointer-events:none}.ai-card h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}.ai-card p{font-size:0.82rem;color:var(--text-2);line-height:1.55}.ai-badge{font-size:0.52rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.2rem 0.5rem;border-radius:4px;background:var(--violet-dim);color:var(--violet)}.ai-demo{margin-top:1rem;padding:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:0.62rem;line-height:1.7;color:var(--text-3)}
+
+        .oss-section{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}.oss-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:0 auto}.oss-box{padding:1.5rem;border:1px solid var(--border);border-radius:var(--r);background:var(--bg-3)}.oss-box ul{list-style:none}.oss-box ul li{font-size:0.8rem;color:var(--text-2);padding:0.25rem 0;display:flex;align-items:center;gap:0.5rem}.oss-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;padding:0.2rem 0.5rem;border-radius:4px;display:inline-block;margin-bottom:0.75rem}.oss-label.open{background:var(--em-dim);color:var(--em)}.oss-label.closed{background:var(--rose-dim);color:var(--rose)}
+
+        .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}.pc{background:var(--bg-3);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;display:flex;flex-direction:column;transition:all 0.3s;position:relative}.pc:hover{transform:translateY(-4px)}.pc.hl{border-color:var(--em);box-shadow:0 0 80px rgba(0,212,170,0.06),0 0 0 1px var(--em)}.pc.hl::after{content:'Most Popular';position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),#00c4a0);color:var(--bg);font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.25rem 0.9rem;border-radius:100px}.pc-tier{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--em);margin-bottom:0.3rem}.pc-name{font-family:var(--display);font-size:1.35rem;font-weight:400;margin-bottom:0.35rem}.pc-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5;margin-bottom:1.25rem;min-height:2.5rem}.pc-list{list-style:none;flex:1}.pc-list li{font-size:0.8rem;color:var(--text-2);padding:0.35rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4}.pc-list li::before{content:'✓';color:var(--em);font-weight:700;font-size:0.72rem;flex-shrink:0;margin-top:2px}.pc-cta{width:100%;justify-content:center;margin-top:1.25rem}
+
+        .dash-preview{margin-top:2rem;background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden}.dash-bar{padding:0.7rem 1rem;background:var(--bg-3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.dash-bar-l{display:flex;align-items:center;gap:0.5rem}.dash-bar-l .td{width:8px;height:8px}.dash-bar span{font-size:0.68rem;color:var(--text-4);font-family:var(--mono)}.dash-body{display:grid;grid-template-columns:1fr 1fr;min-height:220px}.dash-panel{padding:1.25rem;border-right:1px solid var(--border)}.dash-panel:last-child{border-right:none}.dash-panel-title{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:700;margin-bottom:0.75rem}.dash-metric{font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.25rem}.dash-metric.green{color:var(--em)}.dash-sub{font-size:0.7rem;color:var(--text-3)}.dash-chart{display:flex;align-items:flex-end;gap:3px;height:80px;margin-top:0.75rem}.db{flex:1;border-radius:3px 3px 0 0;min-width:4px;background:var(--em);opacity:0.6}.dash-events{list-style:none}.de{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;font-size:0.7rem;font-family:var(--mono);color:var(--text-2);border-bottom:1px solid var(--border)}.de:last-child{border-bottom:none}.det{padding:0.15rem 0.4rem;border-radius:4px;font-size:0.58rem;font-weight:700;text-transform:uppercase;min-width:55px;text-align:center}.det.a{background:var(--em-dim);color:var(--em)}.det.b{background:var(--cyan-dim);color:var(--cyan)}.det.c_{background:var(--violet-dim);color:var(--violet)}.det.d{background:var(--amber-dim);color:var(--amber)}.de-time{color:var(--text-4);margin-left:auto;font-size:0.62rem}
+
+        .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}.faq{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 1.75rem}.faq h4{font-size:0.9rem;font-weight:700;margin-bottom:0.45rem}.faq p{font-size:0.84rem;color:var(--text-2);line-height:1.55}
+
+        .cta{text-align:center;padding:7rem 2rem 8rem;position:relative}.cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse,var(--em-dim) 0%,transparent 65%);pointer-events:none}.cta .stitle{margin-bottom:0.75rem}
+        .foot{border-top:1px solid var(--border);padding:2.5rem 2rem;max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.foot-l p{font-size:0.75rem;color:var(--text-4)}.foot-l .fb{font-weight:800;font-size:0.88rem;color:var(--text-3);margin-bottom:0.2rem;letter-spacing:-0.02em}.foot-r{display:flex;gap:1.5rem}.foot-r a{font-size:0.78rem;color:var(--text-2);transition:color 0.2s}.foot-r a:hover{color:var(--text)}
+
+        @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}.rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}.rv.vis{opacity:1;transform:translateY(0)}
+        @media(max-width:1024px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:900px){.fgrid,.how-grid,.faq-grid,.ai-grid{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}.pgrid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}.ucgrid,.oss-grid,.problem-grid{grid-template-columns:1fr}.ba-grid{grid-template-columns:1fr}.ba-arrow{transform:rotate(90deg);padding:0}.nav-links{display:none}.foot{flex-direction:column;gap:1.5rem;text-align:center}.rust-banner{flex-direction:column;text-align:center}.dash-body{grid-template-columns:1fr}.dash-panel{border-right:none;border-bottom:1px solid var(--border)}}
+        @media(max-width:600px){.hero-actions{flex-direction:column;align-items:center}}
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <a href="/" class="nav-brand"><div class="nav-icon">C</div><span class="nav-name">conduo<span class="ai">.ai</span></span></a>
+    <div class="nav-links">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#use-cases">Use Cases</a>
+        <a href="#ai">AI</a>
+        <a href="#pricing">Pricing</a>
+        <a href="https://github.com/conduo-ai" class="btn btn-o btn-sm">★ GitHub</a>
+        <a href="#contact" class="btn btn-e btn-sm">Get Started</a>
+    </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+    <div class="hero-chip"><span class="dot"></span>Open source · written in Rust</div>
+    <h1>Replace your cron job.<br><em>Stream your files.</em></h1>
+    <p class="hero-sub">You have files landing on a server. CSVs from suppliers. SFTP drops from partners. Reconciliation files from payment processors. Right now a bash script processes them and nobody knows when it breaks. Conduo watches, validates, transforms, and streams — with a dashboard that proves it's working.</p>
+    <div class="hero-actions">
+        <a href="https://github.com/conduo-ai" class="btn btn-e btn-lg">★ Star on GitHub</a>
+        <a href="#contact" class="btn btn-o btn-lg">Book a Demo →</a>
+    </div>
+    <div class="hero-tech">
+        <span class="rs">Rust</span><span>Kafka / Redpanda</span><span>JSONL</span><span>OpenAPI 3</span><span>Docker</span>
+    </div>
+
+    <div class="rust-banner">
+        <div class="rust-logo">🦀</div>
+        <div>
+            <h3>Built in <span>Rust</span> — fast and memory-safe</h3>
+            <p>Zero garbage collection. Sub-millisecond latency. Single static binary, no runtime dependencies. Processes 60,000+ events/sec on modest hardware. Built by a maintainer of <strong>kafka-rust</strong>.</p>
+        </div>
+    </div>
+
+    <div class="terminal">
+        <div class="tw">
+            <div class="tb">
+                <div style="display:flex;gap:0.4rem"><div class="td r"></div><div class="td y"></div><div class="td g"></div></div>
+                <span>conduo — watching /data/incoming/</span>
+            </div>
+            <div class="tc_">
+<span class="p">$</span> conduo start --config data_config/ --watch /data/incoming/
+<span class="d">loading schemas...</span>
+<span class="c">  ├─ supplier_orders</span>  <span class="c">├─ payment_reconciliation</span>
+<span class="c">  ├─ inventory_feed</span>   <span class="c">├─ partner_shipments</span>
+<span class="rs">  ▸ rust engine</span> <span class="d">— zero-copy parsing, memory-safe pipeline</span>
+<span class="d">metrics API</span> <span class="h">:8081</span>  <span class="d">ingestion API</span> <span class="h">:8090</span>
+<span class="d">controller</span> <span class="h">✓ connected</span> <span class="d">(heartbeat ~30s)</span>
+
+<span class="h">▸ new file:</span> supplier_orders_20260226.csv <span class="d">(4,218 rows)</span>
+<span class="c">  ├─ schema:</span> supplier_orders
+<span class="c">  ├─ validated:</span> <span class="h">4,201 ok</span> <span class="ro">17 rejected</span> <span class="d">(missing supplier_id)</span>
+<span class="c">  ├─ output:</span> <span class="h">kafka://conduo_events</span> <span class="d">+ supplier_orders_20260226.jsonl</span>
+<span class="c">  └─ time:</span> <span class="rs">68ms</span>
+
+<span class="h">▸ new file:</span> payment_recon_20260226.txt <span class="d">(12,847 rows)</span>
+<span class="c">  ├─ schema:</span> payment_reconciliation
+<span class="c">  ├─ validated:</span> <span class="h">12,847 ok</span> <span class="ro">0 rejected</span>
+<span class="c">  ├─ output:</span> <span class="h">kafka://conduo_events</span> <span class="d">+ payment_recon_20260226.jsonl</span>
+<span class="c">  └─ time:</span> <span class="rs">142ms</span>
+
+<span class="a">throughput:</span> 2,847 events/sec  <span class="a">sinks:</span> <span class="h">jsonl ✓</span> <span class="h">kafka ✓</span>  <span class="a">controller:</span> <span class="h">● connected</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ PROBLEM ═══════════════ -->
+<div class="problem">
+    <div class="problem-grid">
+        <div class="problem-left rv">
+            <h2>Your file pipeline is a <span>bash script</span> someone wrote three years ago</h2>
+            <p>They've probably left. It runs on cron. It fails silently. When finance calls asking why the reconciliation is wrong, you check the logs and discover it's been broken for two weeks. Sound familiar?</p>
+        </div>
+        <div class="problem-right rv">
+<span class="cmt">#!/bin/bash</span>
+<span class="cmt"># TODO: Dave wrote this in 2023</span>
+<span class="cmt"># DO NOT TOUCH</span>
+
+<span class="bad">0 6 * * * /opt/scripts/process_orders.sh</span>
+<span class="bad">0 7 * * * /opt/scripts/recon_import.sh</span>
+<span class="bad">30 8 * * 1 /opt/scripts/inventory_sync.sh</span>
+
+<span class="cmt"># No validation</span>
+<span class="cmt"># No error handling</span>
+<span class="cmt"># No monitoring</span>
+<span class="cmt"># No one knows when it breaks</span>
+<span class="cmt"># Last modified: 14 months ago</span>
+<span class="cmt"># Good luck</span>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ BEFORE / AFTER ═══════════════ -->
+<section>
+    <div class="wrap tc">
+        <div class="tag rv">The Difference</div>
+        <div class="stitle rv">From silent failure<br>to observable pipeline</div>
+        <p class="sdesc cen rv">Same files. Same data. Completely different confidence level.</p>
+        <div class="ba-section rv">
+            <div class="ba-grid">
+                <div class="ba-card before">
+                    <h3><span style="color:var(--rose)">✗</span> Cron + Bash</h3>
+                    <ul>
+                        <li><span style="color:var(--rose)">✗</span> Fails silently — nobody knows for days</li>
+                        <li><span style="color:var(--rose)">✗</span> No validation — bad data flows downstream</li>
+                        <li><span style="color:var(--rose)">✗</span> No monitoring — "is it running?" requires SSH</li>
+                        <li><span style="color:var(--rose)">✗</span> No transformation — raw files dumped as-is</li>
+                        <li><span style="color:var(--rose)">✗</span> No recovery — restart means reprocess everything</li>
+                        <li><span style="color:var(--rose)">✗</span> One person understands it — and they've left</li>
+                    </ul>
+                </div>
+                <div class="ba-arrow">→</div>
+                <div class="ba-card after">
+                    <h3><span style="color:var(--em)">✓</span> Conduo</h3>
+                    <ul>
+                        <li><span style="color:var(--em)">✓</span> Dashboard shows every file processed</li>
+                        <li><span style="color:var(--em)">✓</span> Schema validation — rejects bad rows with reasons</li>
+                        <li><span style="color:var(--em)">✓</span> Heartbeat every 30s — controller knows it's alive</li>
+                        <li><span style="color:var(--em)">✓</span> Config-driven transforms and derived fields</li>
+                        <li><span style="color:var(--em)">✓</span> Self-healing — resumes from checkpoint on restart</li>
+                        <li><span style="color:var(--em)">✓</span> JSON config — anyone can read and modify it</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section id="how-it-works">
+    <div class="wrap tc">
+        <div class="tag rv">How It Works</div>
+        <div class="stitle rv">Drop a config. Point at a directory.<br>Events start streaming.</div>
+        <p class="sdesc cen rv">Define your file format in JSON. Conduo watches, validates every row, transforms, and streams to Kafka and JSONL. Fifteen minutes from clone to streaming.</p>
+        <div class="how-grid">
+            <div class="how-card rv">
+                <div class="how-num n1">1</div>
+                <h3>Define Your Schema</h3>
+                <p>One JSON file per data type. Map columns, set types, add validation rules, define derived calculations with evalexpr. Takes 10 minutes, not 10 days.</p>
+                <code><span style="color:var(--amber)">data_config/supplier_orders.json</span>
+{
+  "schema": "supplier_orders",
+  "delimiter": ",",
+  "fields": [
+    {"source": "supplier_id",
+     "required": true},
+    {"source": "order_date",
+     "type": "date"},
+    {"source": "quantity",
+     "type": "integer"},
+    {"source": "unit_price",
+     "type": "decimal"}
+  ],
+  "derived": [
+    {"field": "line_total",
+     "expr": "quantity * unit_price"},
+    {"field": "vat",
+     "expr": "line_total * 0.2"}
+  ]
+}</code>
+            </div>
+            <div class="how-card rv">
+                <div class="how-num n2">2</div>
+                <h3>Ingest</h3>
+                <p>Watch a directory for incoming files — CSV, TSV, pipe-delimited, any separator. Or POST data to the REST API with API key auth. Both validate against the same schema.</p>
+                <code><span style="color:var(--amber)">File watcher:</span>
+  /data/incoming/*.csv → validate → stream
+  Any delimiter · auto-detected per schema
+
+<span style="color:var(--em)">REST API (:8090):</span>
+  POST /api/ingest/supplier_orders
+  Header: X-API-Key: {key}
+  OpenAPI spec + Swagger UI
+
+<span style="color:var(--em)">Both paths:</span>
+  Same schema validation
+  Same output sinks
+  Same dashboard visibility</code>
+            </div>
+            <div class="how-card rv">
+                <div class="how-num n3">3</div>
+                <h3>Stream &amp; Monitor</h3>
+                <p>Events stream to Kafka and JSONL simultaneously. Heartbeats every ~30 seconds to the controller. Dashboard shows throughput, recent files, rejected rows, and reasons.</p>
+                <code><span style="color:var(--em)">Output (simultaneous):</span>
+  → kafka://conduo_events
+  → /output/supplier_orders_20260226.jsonl
+
+<span style="color:var(--em)">Controller:</span>
+  Heartbeat every ~30s
+  ● up / ● stale / ● down
+  Fleet view across all instances
+
+<span style="color:var(--violet)">Dashboard:</span>
+  Throughput · Recent files · Rejections</code>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<section>
+    <div class="wrap tc">
+        <div class="tag rv">Visibility</div>
+        <div class="stitle rv">Know it's working.<br>Know when it's not.</div>
+        <p class="sdesc cen rv">No more SSH-ing in to check if your script ran. The dashboard shows every file, every event, every failure — in real time.</p>
+        <div class="dash-preview rv">
+            <div class="dash-bar">
+                <div class="dash-bar-l"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span style="margin-left:0.5rem">conduo — dashboard</span></div>
+                <span>localhost:8081</span>
+            </div>
+            <div class="dash-body">
+                <div class="dash-panel">
+                    <div class="dash-panel-title">Throughput</div>
+                    <div class="dash-metric green">2,847</div>
+                    <div class="dash-sub">events/sec — last 60s</div>
+                    <div class="dash-chart"><div class="db" style="height:45%"></div><div class="db" style="height:62%"></div><div class="db" style="height:78%"></div><div class="db" style="height:90%"></div><div class="db" style="height:85%"></div><div class="db" style="height:72%"></div><div class="db" style="height:82%"></div><div class="db" style="height:95%"></div><div class="db" style="height:88%"></div><div class="db" style="height:76%"></div><div class="db" style="height:70%"></div><div class="db" style="height:80%"></div><div class="db" style="height:92%"></div><div class="db" style="height:100%"></div><div class="db" style="height:75%"></div></div>
+                </div>
+                <div class="dash-panel">
+                    <div class="dash-panel-title">Recent Files</div>
+                    <ul class="dash-events">
+                        <li class="de"><span class="det a">ORDER</span> supplier_orders_0226.csv — 4,201 rows <span class="de-time">2s ago</span></li>
+                        <li class="de"><span class="det b">RECON</span> payment_recon_0226.txt — 12,847 rows <span class="de-time">6m ago</span></li>
+                        <li class="de"><span class="det c_">INV</span> inventory_feed_0226.csv — 847 rows <span class="de-time">1h ago</span></li>
+                        <li class="de"><span class="det d">SHIP</span> partner_shipments_0225.csv — 312 rows <span class="de-time">23h ago</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fleet controller -->
+        <div class="dash-preview rv" style="margin-top:1.5rem">
+            <div class="dash-bar">
+                <div class="dash-bar-l"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span style="margin-left:0.5rem">integrations_controller — fleet view</span></div>
+                <span>controller.conduo.ai</span>
+            </div>
+            <div style="padding:0.75rem 1.25rem;font-family:var(--mono);font-size:0.68rem">
+                <table style="width:100%;border-collapse:collapse;text-align:left">
+                    <thead><tr style="border-bottom:1px solid var(--border)">
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Instance</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Status</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Last File</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Events Today</th>
+                        <th style="padding:0.5rem 0.75rem;color:var(--text-4);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em">Heartbeat</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">acme-finance-prod</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">payment_recon_0226.txt</td><td style="padding:0.55rem 0.75rem;color:var(--em)">17,048</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">4s ago</td></tr>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">acme-warehouse-prod</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--em)">● up</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">inventory_feed_0226.csv</td><td style="padding:0.55rem 0.75rem;color:var(--em)">2,431</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">12s ago</td></tr>
+                        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.55rem 0.75rem;color:var(--text)">partner-sftp-ingest</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--amber)">● stale</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">partner_shipments_0224.csv</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td><td style="padding:0.55rem 0.75rem;color:var(--amber)">4m ago</td></tr>
+                        <tr><td style="padding:0.55rem 0.75rem;color:var(--text)">staging</td><td style="padding:0.55rem 0.75rem"><span style="color:var(--rose)">● down</span></td><td style="padding:0.55rem 0.75rem;color:var(--text-2)">—</td><td style="padding:0.55rem 0.75rem;color:var(--text-3)">0</td><td style="padding:0.55rem 0.75rem;color:var(--rose)">2h ago</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ FEATURES ═══════════════ -->
+<section id="features">
+    <div class="wrap">
+        <div class="tag rv">Platform</div>
+        <div class="stitle rv">Everything your cron job<br>should have been</div>
+        <p class="sdesc rv">File watching, validation, transformation, streaming, monitoring. In a single Rust binary.</p>
+        <div class="fgrid">
+            <div class="fc rv">
+                <div class="fi rs">🦀</div>
+                <h3>Written in Rust</h3>
+                <p>Zero-copy parsing. No garbage collector. 60,000+ events/sec on modest hardware. Single static binary, no runtime dependencies. Runs anywhere Docker runs.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi e">📂</div>
+                <h3>File Watcher</h3>
+                <p>Watches directories for incoming files. CSV, TSV, pipe-delimited — any separator. Files detected, parsed, validated, and streamed. No cron. No scripts. No silent failures.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi cy">✅</div>
+                <h3>Schema Validation</h3>
+                <p>Every row validated — required fields, types, ranges. Bad rows rejected with reasons, not silently passed through. You know exactly what failed and why.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi v">⚙️</div>
+                <h3>Config-Driven Transforms</h3>
+                <p>Field mappings, type coercion, derived calculations via evalexpr — all in JSON config. No code. Add a new file type by adding a config file.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi am">⚡</div>
+                <h3>Kafka + JSONL Output</h3>
+                <p>Events stream to Kafka (Redpanda, Event Hubs, any broker) and JSONL simultaneously. Downstream consumers in Rust and Go included.</p>
+            </div>
+            <div class="fc rv">
+                <div class="fi ro">🛰️</div>
+                <h3>Fleet Controller</h3>
+                <p>Every instance registers and heartbeats every ~30 seconds. Up, stale, or down — you see it instantly. Fleet dashboard with customer and licence management.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ USE CASES ═══════════════ -->
+<section id="use-cases">
+    <div class="wrap">
+        <div class="tag rv">Use Cases</div>
+        <div class="stitle rv">If you're moving files,<br>Conduo replaces your script</div>
+        <p class="sdesc rv">Every industry has file drops held together with cron jobs and hope. Every one of them deserves monitoring.</p>
+        <div class="ucgrid">
+            <div class="uc rv">
+                <div class="uc-tag">Finance</div>
+                <h3>Payment Reconciliation</h3>
+                <p>Daily reconciliation files from payment processors. Validate amounts, flag mismatches, stream to your finance platform. Know immediately when a file is missing or malformed.</p>
+                <div class="uc-met"><strong>12,847</strong><span>rows validated in 142ms</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">Supply Chain</div>
+                <h3>Supplier Orders &amp; Shipments</h3>
+                <p>CSV exports from supplier portals, EDI files, shipment manifests. Normalise different supplier formats into a single event stream. Derived fields calculate totals and duty.</p>
+                <div class="uc-met"><strong>Any format</strong><span>CSV · TSV · pipe · fixed-width</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">Retail</div>
+                <h3>POS Data — 60+ Stores</h3>
+                <p>Pipe-delimited POS files from store servers. File watcher ingestion with schema validation, derived fields, and Kafka streaming. Central dashboard shows every store.</p>
+                <div class="uc-met"><strong>62,319</strong><span>events/sec · Rust engine</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">SFTP / Partners</div>
+                <h3>Partner Data Exchange</h3>
+                <p>Files landing from partners, agencies, data providers. Weekly inventory from a wholesaler. Daily rates from a pricing feed. Monthly compliance data. All validated, all monitored.</p>
+                <div class="uc-met"><strong>&lt;10MB</strong><span>binary · runs anywhere</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">Insurance</div>
+                <h3>Claims &amp; Policy Files</h3>
+                <p>Nightly batch files from underwriters, claims data from loss adjusters, policy renewals from brokers. Different formats, same validation pipeline. Audit trail via JSONL.</p>
+                <div class="uc-met"><strong>JSONL</strong><span>audit trail for every record</span></div>
+            </div>
+            <div class="uc rv">
+                <div class="uc-tag">Any Industry</div>
+                <h3>Your File Drop</h3>
+                <p>If you have files arriving on a schedule and a cron job processing them — that's a Conduo deployment. One config file. Five minutes to set up. Monitored forever.</p>
+                <div class="uc-met"><strong>15 min</strong><span>clone to streaming</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ AI ═══════════════ -->
+<section class="ai-section" id="ai">
+    <div class="wrap tc">
+        <div class="tag rv" style="background:linear-gradient(135deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">AI · Coming Soon</div>
+        <div class="stitle rv">Drop a file.<br>Get a working pipeline.</div>
+        <p class="sdesc cen rv">AI features coming to the controller. Schema inference turns an unknown file into a working config. Anomaly detection learns your patterns and flags when something looks wrong.</p>
+        <div class="ai-grid">
+            <div class="ai-card rv">
+                <h3>🧠 Schema Inference <span class="ai-badge">Coming Soon</span></h3>
+                <p>Drop an unknown file into Conduo. The AI analyses columns, types, and patterns — then proposes a working config. Accept, edit, deploy. Onboarding in minutes.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">POST /api/ai/infer-schema</span>
+<span style="color:var(--text-4)">← upload: mystery_feed_20260226.csv</span>
+
+<span style="color:var(--em)">→ proposed config:</span>
+{
+  "schema": "mystery_feed",
+  "delimiter": ",",
+  "fields": [
+    {"source": "col_1", "target": "supplier_id",
+     "type": "string", <span style="color:var(--violet)">← inferred</span>},
+    {"source": "col_4", "target": "quantity",
+     "type": "integer", <span style="color:var(--violet)">← inferred</span>},
+    {"source": "col_7", "target": "net_amount",
+     "type": "decimal", <span style="color:var(--violet)">← inferred</span>}
+  ],
+  <span style="color:var(--violet)">confidence: 87%</span>
+}
+                </div>
+            </div>
+            <div class="ai-card rv">
+                <h3>📊 Anomaly Detection <span class="ai-badge">Coming Soon</span></h3>
+                <p>Learns normal patterns per file type — row counts, value ranges, arrival times. Flags when Tuesday's reconciliation has zero rows or a supplier price is 100x normal.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">anomaly detected:</span>
+  schema: payment_reconciliation
+  file:   payment_recon_20260226.txt
+  <span style="color:var(--rose)">⚠ row count: 0</span>
+  <span style="color:var(--amber)">expected: 8,000 – 15,000 for Wednesday</span>
+
+<span style="color:var(--violet)">anomaly detected:</span>
+  schema: supplier_orders
+  field:  unit_price
+  value:  £42,500.00
+  <span style="color:var(--rose)">⚠ 50x above p99 for this supplier</span>
+                </div>
+            </div>
+            <div class="ai-card rv">
+                <h3>💬 Natural Language Config <span class="ai-badge">Later</span></h3>
+                <p>Describe your file in plain English. Conduo generates the schema config, mappings, and derived fields. No JSON editing required.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">→ "I get a daily CSV from our payment
+   processor. Columns: transaction ID,
+   date, amount, currency, status.
+   Calculate GBP equivalent. Stream
+   to Kafka. Flag failures."</span>
+
+<span style="color:var(--em)">← generating config...</span>
+<span style="color:var(--em)">← derived: gbp_amount = amount × rate</span>
+<span style="color:var(--em)">← filter: status != 'failed'</span>
+<span style="color:var(--text-4)">Ready. Drop a file to test.</span>
+                </div>
+            </div>
+            <div class="ai-card rv">
+                <h3>🔗 Cross-Source Correlation <span class="ai-badge">Later</span></h3>
+                <p>Match events across file types. Link a supplier order with a shipment manifest and a payment reconciliation into one unified record.</p>
+                <div class="ai-demo">
+<span style="color:var(--violet)">correlated event:</span>
+  order_id: PO-2847
+  <span style="color:var(--cyan)">order:</span>  supplier_orders_0226.csv  <span style="color:var(--text-4)">→ ordered</span>
+  <span style="color:var(--amber)">ship:</span>   partner_shipments_0226.csv <span style="color:var(--text-4)">→ dispatched</span>
+  <span style="color:var(--em)">recon:</span>  payment_recon_0226.txt     <span style="color:var(--text-4)">→ settled</span>
+  <span style="color:var(--em)">status: complete</span>
+  <span style="color:var(--text-4)">latency: order → settlement: 14 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ OPEN SOURCE ═══════════════ -->
+<section class="oss-section" id="open-source">
+    <div class="wrap tc">
+        <div class="tag rv">Open Source</div>
+        <div class="stitle rv">Open engine.<br>Proprietary management.</div>
+        <p class="sdesc cen rv">The integration layer is Apache 2.0. The controller, AI, and fleet monitoring are a paid subscription.</p>
+        <div class="oss-grid">
+            <div class="oss-box rv">
+                <span class="oss-label open">Open Source · Apache 2.0</span>
+                <p style="font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem">github.com/conduo-ai · runs on your infrastructure</p>
+                <ul>
+                    <li><span style="color:var(--em)">✓</span> Integration layer (Rust binary)</li>
+                    <li><span style="color:var(--em)">✓</span> File watcher (any delimiter)</li>
+                    <li><span style="color:var(--em)">✓</span> REST ingestion API + API key auth</li>
+                    <li><span style="color:var(--em)">✓</span> Schema validation + derived fields</li>
+                    <li><span style="color:var(--em)">✓</span> Kafka producer + JSONL sink</li>
+                    <li><span style="color:var(--em)">✓</span> Metrics API + Swagger UI</li>
+                    <li><span style="color:var(--em)">✓</span> Self-healing recovery</li>
+                    <li><span style="color:var(--em)">✓</span> Kafka consumers (Rust + Go)</li>
+                    <li><span style="color:var(--em)">✓</span> Local Svelte dashboard</li>
+                    <li><span style="color:var(--em)">✓</span> Docker Compose + scripts</li>
+                </ul>
+            </div>
+            <div class="oss-box rv" style="border-color:rgba(255,79,109,0.2)">
+                <span class="oss-label closed">Proprietary · SaaS</span>
+                <p style="font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem">controller.conduo.ai · managed by Conduo</p>
+                <ul>
+                    <li><span style="color:var(--rose)">⦿</span> Integrations controller</li>
+                    <li><span style="color:var(--rose)">⦿</span> Fleet dashboard</li>
+                    <li><span style="color:var(--rose)">⦿</span> Customer provisioning</li>
+                    <li><span style="color:var(--rose)">⦿</span> Licence validation</li>
+                    <li><span style="color:var(--rose)">⦿</span> Alerting + notifications</li>
+                    <li><span style="color:var(--rose)">⦿</span> AI schema inference</li>
+                    <li><span style="color:var(--rose)">⦿</span> AI anomaly detection</li>
+                    <li><span style="color:var(--rose)">⦿</span> Natural language config</li>
+                    <li><span style="color:var(--rose)">⦿</span> Cross-source correlation</li>
+                    <li><span style="color:var(--rose)">⦿</span> Managed deployment + support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section id="pricing">
+    <div class="wrap tc">
+        <div class="tag rv">Pricing</div>
+        <div class="stitle rv">Free to start. Scale when ready.</div>
+        <p class="sdesc cen rv">The engine is free forever. Pay for monitoring, AI, and support when you outgrow a single instance.</p>
+        <div class="pgrid">
+            <div class="pc rv">
+                <div class="pc-tier">Community</div>
+                <div class="pc-name">Open Source</div>
+                <p class="pc-desc">Full engine. No limits. No licence key. Replace your cron job today.</p>
+                <ul class="pc-list">
+                    <li>Rust integration engine</li>
+                    <li>File watcher + REST API</li>
+                    <li>Unlimited schemas</li>
+                    <li>Unlimited events</li>
+                    <li>Local dashboard</li>
+                    <li>Community support (GitHub)</li>
+                </ul>
+                <a href="https://github.com/conduo-ai" class="btn btn-o pc-cta">★ Clone on GitHub</a>
+            </div>
+            <div class="pc hl rv">
+                <div class="pc-tier">Starter</div>
+                <div class="pc-name">Connect</div>
+                <p class="pc-desc">Controller access. Fleet dashboard. Know your pipeline is running.</p>
+                <ul class="pc-list">
+                    <li>Everything in Open Source</li>
+                    <li>Controller registration</li>
+                    <li>Fleet dashboard</li>
+                    <li>Heartbeat monitoring</li>
+                    <li>Email support</li>
+                </ul>
+                <a href="#contact" class="btn btn-e pc-cta">Get Started</a>
+            </div>
+            <div class="pc rv">
+                <div class="pc-tier">Professional</div>
+                <div class="pc-name">Scale</div>
+                <p class="pc-desc">Multiple instances. AI features. ERP connectors. Priority support.</p>
+                <ul class="pc-list">
+                    <li>Everything in Connect</li>
+                    <li>Unlimited instances</li>
+                    <li>AI schema inference</li>
+                    <li>Anomaly detection</li>
+                    <li>ERP pollers (SAP / Dynamics)</li>
+                    <li>Alerting + notifications</li>
+                    <li>4hr priority support</li>
+                </ul>
+                <a href="#contact" class="btn btn-o pc-cta">Book a Demo</a>
+            </div>
+            <div class="pc rv">
+                <div class="pc-tier">Enterprise</div>
+                <div class="pc-name">Transform</div>
+                <p class="pc-desc">Private controller. All AI. Custom SLA. Architecture advisory.</p>
+                <ul class="pc-list">
+                    <li>Everything in Scale</li>
+                    <li>Private controller</li>
+                    <li>Natural language config</li>
+                    <li>Cross-source correlation</li>
+                    <li>Custom SLA</li>
+                    <li>Dedicated support</li>
+                    <li>CTO advisory</li>
+                </ul>
+                <a href="#contact" class="btn btn-o pc-cta">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section>
+    <div class="wrap">
+        <div class="tag rv">FAQ</div>
+        <div class="stitle rv">Common questions</div>
+        <p class="sdesc rv" style="margin-bottom:2.5rem">Everything you need to know about replacing your cron job.</p>
+        <div class="faq-grid">
+            <div class="faq rv"><h4>What file formats are supported?</h4><p>CSV, TSV, pipe-delimited, or any custom delimiter — configurable per schema. The file watcher detects new files automatically. You can also POST data via the REST API for programmatic ingestion.</p></div>
+            <div class="faq rv"><h4>What happens to bad data?</h4><p>Bad rows are rejected with specific reasons — missing required field, wrong type, out of range. Valid rows continue through the pipeline. Nothing is silently dropped. The dashboard shows exactly what was rejected and why.</p></div>
+            <div class="faq rv"><h4>Is it really open source?</h4><p>Yes. The entire engine — file watcher, REST API, validation, transforms, Kafka + JSONL sinks, local dashboard — is Apache 2.0 on GitHub. No feature gating, no time limits.</p></div>
+            <div class="faq rv"><h4>Why Rust?</h4><p>Zero garbage collection means predictable latency. Memory safety without runtime overhead. Single static binary with no dependencies. Built by a maintainer of kafka-rust.</p></div>
+            <div class="faq rv"><h4>Can I use it without Kafka?</h4><p>Yes. JSONL output is always available. If you just need validated, transformed files with monitoring — skip Kafka entirely. The dashboard and controller work either way.</p></div>
+            <div class="faq rv"><h4>How long does setup take?</h4><p>Clone the repo, write a schema config for your file format, run start_platform.sh. Fifteen minutes from zero to streaming events. The config is the only thing you need to write.</p></div>
+            <div class="faq rv"><h4>What happens when the server restarts?</h4><p>Self-healing recovery. Conduo tracks which files have been processed via checkpoints. On restart, it resumes from where it stopped — no duplicates, no missed files, no manual intervention.</p></div>
+            <div class="faq rv"><h4>Who's behind Conduo?</h4><p>Built by Resolutis — 25+ years in enterprise integration, embedded systems, and Linux kernel development. Background includes Apple, Google, JLR, and NXP. Maintainer of kafka-rust.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section id="contact" class="cta">
+    <p style="font-size:0.82rem;color:var(--text-3);font-style:italic;margin-bottom:0.5rem" class="rv">Conduo — Latin: "to bring together." Pronounced <strong>con-DOO-oh</strong>.</p>
+    <div class="stitle rv">Your files deserve better<br>than a <em style="font-family:var(--display);background:linear-gradient(135deg,var(--em2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">cron job</em></div>
+    <p style="color:var(--text-2);max-width:480px;margin:0 auto 2rem;font-size:1.02rem" class="rv">Clone the repo and replace your first script in 15 minutes.<br>Or book a demo and we'll run your files through Conduo live.</p>
+    <div class="hero-actions rv">
+        <a href="https://github.com/conduo-ai" class="btn btn-e btn-lg">★ Star on GitHub</a>
+        <a href="#" class="btn btn-o btn-lg" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false">Book a Demo →</a>
+    </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="foot">
+    <div class="foot-l">
+        <div class="fb">conduo.ai</div>
+        <p>Conduo by Resolutis · © 2026 Resolutis Ltd</p>
+        <p style="font-size:0.68rem;margin-top:0.15rem">Engine: Apache 2.0 · Controller: Commercial</p>
+    </div>
+    <div class="foot-r">
+        <a href="https://github.com/conduo-ai">GitHub</a>
+        <a href="#features">Features</a>
+        <a href="#ai">AI</a>
+        <a href="#open-source">Open Source</a>
+        <a href="#pricing">Pricing</a>
+        <a href="https://resolutis.com">Resolutis</a>
+        <a href="#" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false">Contact</a>
+    </div>
+</footer>
+
+<script>
+const rv=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(e=>{e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>en.target.classList.add('vis'),i*60);obs.unobserve(en.target)}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+rv.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
