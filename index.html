@@ -128,14 +128,8 @@
 
     <div class="form-wrap">
         <p class="form-label">Be first to know when we launch</p>
-        <div class="form-row" id="form-row">
-            <input type="email" id="email-input" placeholder="you@company.com" autocomplete="email">
-            <button class="btn btn-e" onclick="handleSignup()">Notify me →</button>
-        </div>
-        <div class="confirmed" id="confirmed">
-            <span style="font-size:1.1rem">✓</span> You're on the list — we'll be in touch.
-        </div>
-        <p class="form-note">No spam. One email when we're ready.</p>
+        <a href="mailto:john+conduo@resolutis.com?subject=Conduo%20Waitlist&body=Hi%2C%20I%27d%20like%20to%20be%20kept%20in%20the%20loop%20about%20Conduo." class="btn btn-e" style="display:inline-flex;padding:0.85rem 2rem;font-size:0.92rem;border-radius:12px">Notify me →</a>
+        <p class="form-note" style="margin-top:0.75rem">Opens your email client. No spam — one email when we launch.</p>
     </div>
 
     <div class="hints">
@@ -154,37 +148,11 @@
         <p style="font-size:0.72rem;color:var(--text-4)">Conduo by Resolutis · © 2026 Resolutis Ltd</p>
         <div style="display:flex;gap:1.5rem">
             <a href="https://github.com/conduo-ai" style="font-size:0.75rem;color:var(--text-2);transition:color 0.2s">★ GitHub</a>
-            <a href="#" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false" style="font-size:0.75rem;color:var(--text-2);transition:color 0.2s">hello@conduo.ai</a>
+            <a href="#" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false" style="font-size:0.75rem;color:var(--text-2);transition:color 0.2s"><span class="__cf_email__" data-cfemail="345c5158585b74575b5a50415b1a555d">[email&#160;protected]</span></a>
         </div>
     </div>
 </footer>
 
-<script>
-function handleSignup() {
-    const input = document.getElementById('email-input');
-    const formRow = document.getElementById('form-row');
-    const confirmed = document.getElementById('confirmed');
-    const email = input.value.trim();
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!valid) {
-        input.style.borderColor = '#ff4f6d';
-        input.focus();
-        setTimeout(() => input.style.borderColor = '', 1200);
-        return;
-    }
-
-    // In production: POST to your signup endpoint here
-    // fetch('/api/waitlist', { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} })
-
-    formRow.style.display = 'none';
-    confirmed.style.display = 'flex';
-}
-
-document.getElementById('email-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleSignup();
-});
-</script>
 
 </body>
 </html>

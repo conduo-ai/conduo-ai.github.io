@@ -48,6 +48,8 @@
         .foot{border-top:1px solid var(--border);padding:2.5rem 2rem;max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.foot-l p{font-size:0.75rem;color:var(--text-4)}.foot-l .fb{font-weight:800;font-size:0.88rem;color:var(--text-3);margin-bottom:0.2rem;letter-spacing:-0.02em}.foot-r{display:flex;gap:1.5rem}.foot-r a{font-size:0.78rem;color:var(--text-2);transition:color 0.2s}.foot-r a:hover{color:var(--text)}
 
         @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}.rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}.rv.vis{opacity:1;transform:translateY(0)}
+        .waitlist-wrap{max-width:440px;margin:2.5rem auto 0}.waitlist-label{font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em}.waitlist-row{display:flex;gap:0.5rem}.waitlist-row input{flex:1;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-family:var(--sans);font-size:0.88rem;color:var(--text);outline:none;transition:border-color 0.2s}.waitlist-row input::placeholder{color:var(--text-4)}.waitlist-row input:focus{border-color:var(--em)}.waitlist-note{font-size:0.72rem;color:var(--text-4);margin-top:0.75rem}.waitlist-confirmed{display:none;align-items:center;justify-content:center;gap:0.6rem;padding:0.9rem 1.5rem;background:var(--em-dim);border:1px solid rgba(0,212,170,0.2);border-radius:10px;font-size:0.88rem;font-weight:600;color:var(--em);margin-top:0.5rem}
+        @media(max-width:600px){.waitlist-row{flex-direction:column}}
         @media(max-width:1024px){.pgrid{grid-template-columns:repeat(2,1fr)}.schema-grid{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:900px){.fgrid,.how-grid,.faq-grid,.ai-grid{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}.pgrid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}.ucgrid,.oss-grid,.problem-grid{grid-template-columns:1fr}.ba-grid{grid-template-columns:1fr}.ba-arrow{transform:rotate(90deg);padding:0}.nav-links{display:none}.foot{flex-direction:column;gap:1.5rem;text-align:center}.rust-banner{flex-direction:column;text-align:center}.dash-body{grid-template-columns:1fr}.dash-panel{border-right:none;border-bottom:1px solid var(--border)}.schema-grid{grid-template-columns:1fr}}
         @media(max-width:600px){.hero-actions{flex-direction:column;align-items:center}}
@@ -602,6 +604,11 @@
     <div class="hero-actions rv">
         <a href="https://github.com/conduo-ai" class="btn btn-e btn-lg">★ Star on GitHub</a>
         <a href="#" class="btn btn-o btn-lg" onclick="window.location='mai'+'lto:'+'hello'+'@'+'conduo.ai';return false">Book a Demo →</a>
+    </div>
+    <div class="waitlist-wrap rv">
+        <p class="waitlist-label">Or join the waitlist — be first to know about new features</p>
+        <a href="mailto:john+conduo@resolutis.com?subject=Conduo%20Waitlist&body=Hi%2C%20I%27d%20like%20to%20be%20kept%20in%20the%20loop%20about%20Conduo." class="btn btn-e" style="display:inline-flex;padding:0.75rem 1.75rem">Join the waitlist →</a>
+        <p class="waitlist-note" style="margin-top:0.75rem">Opens your email client. No spam — one email when we launch.</p>
     </div>
 </section>
 
